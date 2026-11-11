@@ -11,7 +11,7 @@
                     <div class="login-form-container">
                         <div class="mb-4">
                             <a class="logo d-inline-block" href="">
-                                <img alt="Mecacuy" src="{{ asset('dashboard/assets/images/logo/1.png') }}" width="250">
+                                <img alt="Tesis" src="{{ asset('dashboard/assets/images/logo/1.png') }}" width="250">
                             </a>
                         </div>
 

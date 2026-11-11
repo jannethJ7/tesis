@@ -1,7 +1,7 @@
 services:
   emqx:
     image: emqx/emqx:latest
-    container_name: mecacuy-emqx
+    container_name: tesis-emqx
     restart: unless-stopped
     hostname: node1.emqx.com
     environment:
@@ -17,7 +17,7 @@ services:
 
   mediamtx:
     image: bluenviron/mediamtx:latest
-    container_name: mecacuy-mediamtx
+    container_name: tesis-mediamtx
     restart: unless-stopped
     ports:
       - "8554:8554/tcp"   # RTSP

@@ -4,7 +4,7 @@
 
 @section('title', 'Módulos')
 @section('page-title', 'Módulos ESP32')
-@section('page-subtitle', 'Administra cada jaula o unidad física de producción')
+@section('page-subtitle', 'Administra cada módulo o unidad física de producción')
 
 @section('content')
 @php

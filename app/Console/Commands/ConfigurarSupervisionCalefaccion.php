@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 
 class ConfigurarSupervisionCalefaccion extends Command
 {
-    protected $signature = 'mecacuy:calefaccion-configurar {modulo : Código del módulo} {--actuador= : Código del calefactor} {--gpio=33 : Entrada ADC1 libre}';
+    protected $signature = 'tesis:calefaccion-configurar {modulo : Código del módulo} {--actuador= : Código del calefactor} {--gpio=33 : Entrada ADC1 libre}';
     protected $description = 'Registra la supervisión ACS712 pendiente de calibración, sin cambiar el estado del calefactor.';
 
     public function handle(): int

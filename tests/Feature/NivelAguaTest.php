@@ -46,7 +46,7 @@ class NivelAguaTest extends TestCase
         $modulo = $this->modulo();
         $anteriores = $this->individuales($modulo);
         $anteriores[25]->lecturas()->create(['valor' => 1, 'medido_en' => now(), 'recibido_en' => now(), 'calidad' => 'ok']);
-        $this->artisan('mecacuy:agua-configurar', ['modulo' => 'MOD-001'])->assertSuccessful();
+        $this->artisan('tesis:agua-configurar', ['modulo' => 'MOD-001'])->assertSuccessful();
         $sensor = $modulo->sensores()->where('codigo', 'S_NIVEL')->firstOrFail();
         $this->assertNull($sensor->gpio_pin);
         $this->assertSame('%', $sensor->unidad);
@@ -97,7 +97,7 @@ class NivelAguaTest extends TestCase
     {
         $modulo = $this->modulo();
         $actuador = Actuador::create(['modulo_id' => $modulo->id, 'codigo' => 'D_FAN', 'nombre' => 'Ventilador', 'tipo' => 'rele', 'gpio_pin' => 23]);
-        $this->artisan('mecacuy:agua-configurar', ['modulo' => 'MOD-001'])->assertFailed();
+        $this->artisan('tesis:agua-configurar', ['modulo' => 'MOD-001'])->assertFailed();
         $this->assertSame(23, $actuador->fresh()->gpio_pin);
         $this->assertDatabaseCount('sensores', 0);
     }

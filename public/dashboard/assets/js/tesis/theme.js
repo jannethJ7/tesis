@@ -1,6 +1,6 @@
 (() => {
     const root = document.documentElement;
-    const key = 'mecacuy-panel-theme';
+    const key = 'tesis-panel-theme';
     let saved;
     try { saved = localStorage.getItem(key); } catch (_) { /* Navegación privada. */ }
     root.dataset.mcTheme = saved === 'dark' ? 'dark' : 'light';

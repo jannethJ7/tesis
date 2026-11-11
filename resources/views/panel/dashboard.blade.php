@@ -3,8 +3,7 @@
 @include('panel._partials.pro-assets')
 
 @section('title', 'Dashboard')
-@section('page-title', 'Panel Mecacuy')
-@section('page-subtitle', 'Monitoreo ambiental, actuadores y alertas por módulo')
+@section('page-title', 'Panel')
 
 @section('content')
 @php
@@ -32,7 +31,7 @@
     <section class="mc-pro-hero">
         <div class="mc-pro-hero-content">
             
-            <h2>Centro de control inteligente para jaulas modulares</h2>
+            <h2>Centro de control inteligente para sistemas modulares</h2>
             
 
             <div class="mc-pro-hero-actions">

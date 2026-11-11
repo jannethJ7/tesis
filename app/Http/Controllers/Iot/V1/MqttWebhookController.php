@@ -42,7 +42,7 @@ class MqttWebhookController
         }
 
         $partes = explode('/', trim($data['topic'], '/'));
-        $prefix = trim((string) config('mqtt.topic_prefix', 'mecacuy'), '/');
+        $prefix = trim((string) config('mqtt.topic_prefix', 'tesis'), '/');
 
         if (count($partes) !== 3 || $partes[0] !== $prefix) {
             return response()->json(['ok' => false, 'error' => 'Topic MQTT fuera del esquema MecaCuy.'], 422);

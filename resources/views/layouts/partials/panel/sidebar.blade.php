@@ -82,7 +82,7 @@
             <a href="{{ Route::has('panel.dashboard') ? route('panel.dashboard') : url('/') }}">
                 <img
                     src="{{ asset('dashboard/assets/images/logo/1.png') }}"
-                    alt="Mecacuy"
+                    alt="Tesis"
                     class="mc-sidebar-logo"
                 >
             </a>

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-9 col-12">
                 <ul class="footer-text">
-                    <li><p class="mb-0">Mecacuy PRO — EcoCuy + AgroIoT</p></li>
+                    <li><p class="mb-0">Tesis PRO — EcoCuy + AgroIoT</p></li>
                     <li><a href="#">V1.0.0</a></li>
                 </ul>
             </div>

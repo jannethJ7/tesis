@@ -22,7 +22,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <script src="{{ asset('dashboard/assets/js/mecacuy/theme.js') }}"></script>
+    <script src="{{ asset('dashboard/assets/js/tesis/theme.js') }}"></script>
     @include('layouts.partials.panel.head') 
 </head>
 
@@ -39,7 +39,7 @@
 
                     <div class="mc-title-box">
                         <h1>@yield('page-title', 'Dashboard')</h1>
-                        <p>@yield('page-subtitle', 'Sistema de monitoreo y automatización Mecacuy')</p>
+                        <p>@yield('page-subtitle', 'Sistema de monitoreo y automatización Tesis')</p>
                     </div>
                 </div>
 
@@ -138,7 +138,7 @@
         </main>
     </div>
 
-    <script src="{{ asset('dashboard/assets/js/mecacuy/panel.js') }}"></script>
+    <script src="{{ asset('dashboard/assets/js/tesis/panel.js') }}"></script>
 
     @stack('scripts')
 </body>

@@ -53,7 +53,7 @@
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.18"></script>
-<script src="{{ asset('dashboard/assets/js/mecacuy/camera-live.js') }}?v={{ filemtime(public_path('dashboard/assets/js/mecacuy/camera-live.js')) }}"></script>
+<script src="{{ asset('dashboard/assets/js/tesis/camera-live.js') }}?v={{ filemtime(public_path('dashboard/assets/js/tesis/camera-live.js')) }}"></script>
 <script>
 (() => {
     const source = @json($camara->hls_url);

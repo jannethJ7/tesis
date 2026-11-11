@@ -13,7 +13,7 @@ body.mc-panel-body {
     font-family: "Montserrat", Arial, sans-serif;
     color: var(--mc-text);
     background: linear-gradient(132deg, rgba(var(--mc-green-dark-rgb), 0.5), rgba(var(--mc-green-rgb), 0.1)),
-        url("/dashboard/assets/images/mecacuy/panel-bg.jpg");
+        url("/dashboard/assets/images/tesis/panel-bg.jpg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -24,8 +24,8 @@ body.mc-panel-body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle at 12% 15%, rgba(var(--mc-aqua-rgb), 0.18), transparent 26%),
-        radial-gradient(circle at 90% 10%, rgba(var(--mc-muted-strong-rgb), 0.12), transparent 28%),
+    background: radial-gradient(circle at 12% 15%, rgba(var(--mc-aqua-rgb), 0.18), transparent 16%),
+        radial-gradient(circle at 90% 10%, rgba(var(--mc-muted-strong-rgb), 0.12), transparent 18%),
         linear-gradient(90deg, rgba(0, 0, 0, 0.46), transparent 58%);
     pointer-events: none;
     z-index: 0;
@@ -1567,7 +1567,7 @@ button {
             rgba(255, 255, 255, 0.20),
             rgba(0, 0, 0, 0.45)
         ),
-        url("/dashboard/assets/images/mecacuy/jaula-mecacuy.png");
+        url("/dashboard/assets/images/tesis/jaula-tesis.png");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -1713,38 +1713,38 @@ button {
 
 .icon-thermo {
     color: var(--mc-aqua);
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/device_thermostat.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/device_thermostat.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/device_thermostat.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/device_thermostat.svg");
 }
 
 .icon-wheat {
     color: var(--mc-muted-strong);
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/wheat.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/wheat.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/wheat.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/wheat.svg");
 }
 
 .icon-gear {
     color: var(--mc-aqua);
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/mode.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/mode.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/mode.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/mode.svg");
 }
 
 .icon-water {
     color: var(--mc-aqua);
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/water_drop.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/water_drop.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/water_drop.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/water_drop.svg");
 }
 
 .icon-fan {
     color: var(--mc-aqua);
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/mode.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/mode.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/mode.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/mode.svg");
 }
 
 .icon-heat {
     color: var(--mc-orange);
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/nest.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/nest.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/nest.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/nest.svg");
 }
 
 .quick-controls-card {
@@ -1799,8 +1799,8 @@ button {
 }
 
 .quick-icon.food::before {
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/wheat.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/wheat.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/wheat.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/wheat.svg");
 }
 
 .quick-icon.water {
@@ -1809,8 +1809,8 @@ button {
 }
 
 .quick-icon.water::before {
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/fluid.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/fluid.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/fluid.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/fluid.svg");
 }
 
 .quick-icon.fan {
@@ -1819,8 +1819,8 @@ button {
 }
 
 .quick-icon.fan::before {
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/mode.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/mode.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/mode.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/mode.svg");
 }
 
 .quick-icon.heat {
@@ -1829,8 +1829,8 @@ button {
 }
 
 .quick-icon.heat::before {
-    -webkit-mask-image: url("/dashboard/assets/images/mecacuy/icons/nest.svg");
-    mask-image: url("/dashboard/assets/images/mecacuy/icons/nest.svg");
+    -webkit-mask-image: url("/dashboard/assets/images/tesis/icons/nest.svg");
+    mask-image: url("/dashboard/assets/images/tesis/icons/nest.svg");
 }
 
 .quick-info strong,
@@ -3962,7 +3962,7 @@ body.mc-panel-body .mc-pro-hero {
             rgba(var(--mc-green-rgb), 0.48) 58%,
             rgba(var(--mc-green-dark-rgb), 0.18) 100%
         ),
-        url("/dashboard/assets/images/mecacuy/esp32-hero-modulo.jpg") right center / cover no-repeat !important;
+        url("/dashboard/assets/images/tesis/esp32-hero-modulo.jpg") right center / cover no-repeat !important;
     border-radius: 30px;
 }
 
@@ -6111,7 +6111,7 @@ body.mc-panel-body .mc-auto-days-grid label input[type="checkbox"]:focus-visible
             rgba(var(--mc-green-rgb), 0.68) 58%,
             rgba(var(--mc-green-dark-rgb), 0.18) 100%
         ),
-        url("/dashboard/assets/images/mecacuy/esp32-hero.jpg") right center / cover no-repeat !important;
+        url("/dashboard/assets/images/tesis/esp32-hero.jpg") right center / cover no-repeat !important;
     border: 1px solid rgba(var(--mc-aqua-rgb), 0.24) !important;
     box-shadow: 0 22px 60px rgba(0, 0, 0, 0.42) !important;
 }
@@ -6301,7 +6301,7 @@ body.mc-panel-body .mc-auto-days-grid label input[type="checkbox"]:focus-visible
                 rgba(var(--mc-green-dark-rgb), 0.96),
                 rgba(var(--mc-green-dark-rgb), 0.84)
             ),
-            url("/dashboard/assets/images/mecacuy/esp32-hero.jpg") center / cover no-repeat !important;
+            url("/dashboard/assets/images/tesis/esp32-hero.jpg") center / cover no-repeat !important;
     }
 }
 
@@ -6526,7 +6526,7 @@ html[data-mc-theme="light"] .mc-pro-form-card,
 html[data-mc-theme="light"] .mc-pro-module-card,
 html[data-mc-theme="light"] .mc-pro-sensor-card,
 html[data-mc-theme="light"] .mc-pro-actuator-card {
-    background: #ffffffa8 !important;
+    background: #ffffff43 !important;
     border-color: #5b6164 !important;
     box-shadow: 0 6px 24px rgba(28, 53, 70, .06) !important;
 }
@@ -6590,12 +6590,12 @@ html[data-mc-theme="light"] .mc-pro-field select option {
 
 html[data-mc-theme] body.mc-panel-body {
     background: linear-gradient(132deg, rgba(7, 9, 15, .5), rgba(14, 20, 34, .1)),
-        url("/dashboard/assets/images/mecacuy/panel-bg.jpg") center / cover fixed;
+        url("/dashboard/assets/images/tesis/panel-bg.jpg") center / cover fixed;
 }
 
 html[data-mc-theme="light"] body.mc-panel-body {
-    background: linear-gradient(132deg, rgba(243, 248, 250, 0.532), rgba(243, 248, 250, 0.389)),
-        url("/dashboard/assets/images/mecacuy/panel-bg.jpg") center / cover fixed;
+    background: linear-gradient(132deg, rgba(243, 248, 250, 0.344), rgba(243, 248, 250, 0.152)),
+        url("/dashboard/assets/images/tesis/panel-bg.jpg") center / cover fixed;
 }
 
 html[data-mc-theme="light"] body.mc-panel-body::before {
@@ -6644,7 +6644,7 @@ html[data-mc-theme="light"] .mc-pro-toggle-wrap {
 
 html[data-mc-theme="light"] body.mc-panel-body .mc-pro-card-head a,
 html[data-mc-theme="light"] body.mc-panel-body .mc-pro-mode a {
-    color: #ba7200 !important;
+    color: #000000 !important;
 }
 
 html[data-mc-theme="light"] .mc-pro-badge.is-danger {

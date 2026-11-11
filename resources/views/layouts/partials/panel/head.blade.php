@@ -3,7 +3,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>@yield('title', 'Panel') - Mecacuy</title>
+<title>@yield('title', 'Panel') - Tesis</title>
 
 <link rel="icon" type="image/x-icon" href="{{ asset('dashboard/assets/images/logo/favicon.png') }}">
 
@@ -16,8 +16,8 @@
 >
 
 {{-- Variables y componentes se cargan una sola vez. La versión cambia al editar el archivo. --}}
-<link rel="stylesheet" href="{{ asset('dashboard/assets/css/mecacuy/theme.css') }}?v={{ filemtime(public_path('dashboard/assets/css/mecacuy/theme.css')) }}">
-<link rel="stylesheet" href="{{ asset('dashboard/assets/css/mecacuy/panel.css') }}?v={{ filemtime(public_path('dashboard/assets/css/mecacuy/panel.css')) }}">
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/tesis/theme.css') }}?v={{ filemtime(public_path('dashboard/assets/css/tesis/theme.css')) }}">
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/tesis/panel.css') }}?v={{ filemtime(public_path('dashboard/assets/css/tesis/panel.css')) }}">
 
 {{-- Remix Icon --}}
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">

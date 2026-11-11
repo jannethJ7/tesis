@@ -1,7 +1,7 @@
 services:
   emqx:
     image: emqx/emqx-enterprise:6.3.0
-    container_name: mecacuy-emqx
+    container_name: tesis-emqx
     hostname: mqtt.local
     restart: unless-stopped
     environment:

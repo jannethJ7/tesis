@@ -224,7 +224,7 @@
         {{-- Vista principal de jaula --}}
         <section class="jaula-card jaula-visual-card">
             <div class="card-title-row">
-                <h2>Esquema de la jaula</h2>
+                <h2>Esquema</h2>
                 <span class="small-info">Módulo {{ $modulo->codigo }}</span>
             </div>
 
@@ -319,7 +319,7 @@
                     </div>
 
                     <div class="quick-info">
-                        <strong>Alimentación</strong>
+                        <strong>Tolva</strong>
                         @if($actAlimento && $canManual)
                     <div class="quick-segment-group quick-segment-food" role="group" aria-label="Control temporizado de alimentación">
                         @foreach([10, 20, 50] as $segundos)
@@ -624,6 +624,6 @@ document.addEventListener('change', async function (event) {
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.18"></script>
-<script src="{{ asset('dashboard/assets/js/mecacuy/camera-live.js') }}?v={{ filemtime(public_path('dashboard/assets/js/mecacuy/camera-live.js')) }}"></script>
-<script src="{{ asset('dashboard/assets/js/mecacuy/module-camera.js') }}?v={{ filemtime(public_path('dashboard/assets/js/mecacuy/module-camera.js')) }}"></script>
+<script src="{{ asset('dashboard/assets/js/tesis/camera-live.js') }}?v={{ filemtime(public_path('dashboard/assets/js/tesis/camera-live.js')) }}"></script>
+<script src="{{ asset('dashboard/assets/js/tesis/module-camera.js') }}?v={{ filemtime(public_path('dashboard/assets/js/tesis/module-camera.js')) }}"></script>
 @endpush

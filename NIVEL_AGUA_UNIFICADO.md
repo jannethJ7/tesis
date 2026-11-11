@@ -24,7 +24,7 @@ En Sensores, crear un sensor, seleccionar el módulo y el tipo **Nivel de agua d
 Para convertir una instalación con los cuatro sensores antiguos, ejecutar desde la carpeta Laravel:
 
 ```sh
-php artisan mecacuy:agua-configurar MOD-001
+php artisan tesis:agua-configurar MOD-001
 php artisan view:clear
 ```
 
@@ -35,7 +35,7 @@ Las reglas automáticas binarias inequívocas, sin histéresis, se convierten al
 ## Puesta en marcha
 
 1. Respaldar y actualizar el proyecto Laravel en el servidor. Ejecutar el comando de configuración y revisar su resumen.
-2. Abrir `firmware_esp32/firmware_mecacuy_espanol/firmware_mecacuy_espanol.ino` junto con `NivelAgua.h` y `SupervisionCalefaccion.h`. Completar las credenciales privadas y cargar al ESP32.
+2. Abrir `firmware_esp32/firmware_tesis_espanol/firmware_tesis_espanol.ino` junto con `NivelAgua.h` y `SupervisionCalefaccion.h`. Completar las credenciales privadas y cargar al ESP32.
 3. Confirmar la sincronización del sensor `S_NIVEL` y probar físicamente vacío, 25, 50, 75 y 100 %, así como la desconexión del nodo. Verificar llenado y corte con el circuito real.
 4. Comprobar las reglas de automatización y crear las alertas requeridas sobre el nuevo sensor en porcentaje.
 

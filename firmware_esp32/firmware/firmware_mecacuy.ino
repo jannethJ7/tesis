@@ -18,14 +18,14 @@ const char* MODULO_UID    = "ESP32-MOD-001";
 const char* MODULO_CODIGO = "MOD-001";
 const char* CLAVE_DISPOSITIVO    = "mc_i1hw2WhSzK4lRJxWhlb1e92PUqkf3KMirPoYVoMRSat6MH8F4avLa4sZ";
 const bool DEPURAR_CALIBRACION_CALEFACCION = false;
-const char* VERSION_FIRMWARE    = "mecacuy-esp32-hibrido-2.3.1";
+const char* VERSION_FIRMWARE    = "tesis-esp32-hibrido-2.3.1";
 
 const bool MQTT_HABILITADO = true;
 const char* SERVIDOR_MQTT = "ddb1331f.ala.eu-central-1.emqxsl.com";
 const uint16_t PUERTO_MQTT = 8883;
 const char* USUARIO_MQTT = "esp32_mod001";
-const char* CLAVE_MQTT = "Esp_32_Mecacuy";
-const char* PREFIJO_TEMAS_MQTT = "mecacuy";
+const char* CLAVE_MQTT = "Esp_32_Tesis";
+const char* PREFIJO_TEMAS_MQTT = "tesis";
 
 String URL_SINCRONIZACION     = String(URL_BASE_SERVIDOR) + "/api/iot/v1/sync";
 String URL_LECTURAS = String(URL_BASE_SERVIDOR) + "/api/iot/v1/lecturas";
@@ -305,21 +305,21 @@ bool enviarJsonHttp(const String& direccion, const String& cuerpoMensaje, String
 }
 
 bool guardarSincronizacionJson(const String& textoJson) {
-  preferencias.begin("mecacuy", false);
+  preferencias.begin("tesis", false);
   bool correcto = preferencias.putString("sync_json", textoJson) > 0;
   preferencias.end();
   return correcto;
 }
 
 String cargarSincronizacionJson() {
-  preferencias.begin("mecacuy", true);
+  preferencias.begin("tesis", true);
   String s = preferencias.getString("sync_json", "");
   preferencias.end();
   return s;
 }
 
 void cargarHistorialComandos() {
-  preferencias.begin("mecacuy", true);
+  preferencias.begin("tesis", true);
   String lecturaOriginal = preferencias.getString("nonce_hist", "");
   preferencias.end();
 
@@ -354,7 +354,7 @@ void guardarHistorialComandos() {
     lecturaOriginal += historialComandos[indice];
   }
 
-  preferencias.begin("mecacuy", false);
+  preferencias.begin("tesis", false);
   preferencias.putString("nonce_hist", lecturaOriginal);
   preferencias.end();
 }
@@ -1458,7 +1458,7 @@ void setup() {
 
   cargarHistorialComandos();
 
-  identificadorClienteMqtt = String("mecacuy-") + MODULO_CODIGO + "-" + String((uint32_t)(ESP.getEfuseMac() & 0xFFFFFFFF), HEX);
+  identificadorClienteMqtt = String("tesis-") + MODULO_CODIGO + "-" + String((uint32_t)(ESP.getEfuseMac() & 0xFFFFFFFF), HEX);
   mensajeDesconexionMqtt = String("{\"status\":\"offline\",\"uid\":\"") + MODULO_UID + "\",\"codigo\":\"" + MODULO_CODIGO + "\"}";
 
   clienteMqtt

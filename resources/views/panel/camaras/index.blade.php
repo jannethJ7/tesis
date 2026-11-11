@@ -17,7 +17,7 @@
 
     @include('panel._partials.page-header', [
         'eyebrow' => 'Video',
-        'title' => 'Cámaras por jaula',
+        'title' => 'Cámaras por módulo',
         'buttonRoute' => 'panel.camaras.create',
         'buttonIcon' => 'ri-camera-line',
         'buttonText' => 'Nueva cámara',

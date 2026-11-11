@@ -12,7 +12,7 @@ const char* WIFI_PASS = "TU_PASSWORD_WIFI";
 const char* BASE_URL   = "https://xxxxx";
 const char* MODULO_UID = "ESP32-MOD-001";
 const char* DEVICE_KEY = "TU_DEVICE_KEY_REGENERADA";
-const char* FW_VERSION = "mecacuy-esp32-rest-1.2.2";
+const char* FW_VERSION = "tesis-esp32-rest-1.2.2";
 
 String URL_SYNC     = String(BASE_URL) + "/api/iot/v1/sync";
 String URL_LECTURAS = String(BASE_URL) + "/api/iot/v1/lecturas";
@@ -249,14 +249,14 @@ bool httpPOSTJson(const String& url, const String& body, String& out) {
 }
 
 bool saveSyncJson(const String& json) {
-  prefs.begin("mecacuy", false);
+  prefs.begin("tesis", false);
   bool ok = prefs.putString("sync_json", json) > 0;
   prefs.end();
   return ok;
 }
 
 String loadSyncJson() {
-  prefs.begin("mecacuy", true);
+  prefs.begin("tesis", true);
   String s = prefs.getString("sync_json", "");
   prefs.end();
   return s;

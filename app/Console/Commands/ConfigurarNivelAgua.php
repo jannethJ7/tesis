@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class ConfigurarNivelAgua extends Command
 {
-    protected $signature = 'mecacuy:agua-configurar {modulo : Código del módulo}';
+    protected $signature = 'tesis:agua-configurar {modulo : Código del módulo}';
     protected $description = 'Agrupa el circuito probado de cuatro niveles en un único sensor S_NIVEL.';
 
     public function handle(NivelAgua $nivel): int

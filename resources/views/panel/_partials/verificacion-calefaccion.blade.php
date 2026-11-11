@@ -12,10 +12,10 @@
     </div>
     @once
         @push('styles')
-            <link rel="stylesheet" href="{{ asset('dashboard/assets/css/mecacuy/verificacion-calefaccion.css') }}">
+            <link rel="stylesheet" href="{{ asset('dashboard/assets/css/tesis/verificacion-calefaccion.css') }}">
         @endpush
         @push('scripts')
-            <script src="{{ asset('dashboard/assets/js/mecacuy/verificacion-calefaccion.js') }}" defer></script>
+            <script src="{{ asset('dashboard/assets/js/tesis/verificacion-calefaccion.js') }}" defer></script>
         @endpush
     @endonce
 @endif

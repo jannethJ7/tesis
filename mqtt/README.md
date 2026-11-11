@@ -34,7 +34,7 @@ Crea un API Key/Secret en EMQX y configura en Laravel:
 
 ```env
 MQTT_ENABLED=true
-MQTT_TOPIC_PREFIX=mecacuy
+MQTT_TOPIC_PREFIX=tesis
 EMQX_API_BASE=http://IP_EMQX:18083/api/v5
 EMQX_API_KEY=...
 EMQX_API_SECRET=...
@@ -45,7 +45,7 @@ Si Laravel y EMQX están dentro de la misma red Docker, usa el nombre interno de
 
 ## 4. EMQX -> Laravel por Webhook
 
-Crear un Webhook/HTTP Server Sink que envíe los mensajes de `mecacuy/+/+` a:
+Crear un Webhook/HTTP Server Sink que envíe los mensajes de `tesis/+/+` a:
 
 ```text
 https://TU_LARAVEL/api/mqtt/v1/webhook
@@ -74,10 +74,10 @@ El endpoint acepta `telemetry`, `ack` y `status`. Si recibe `command` por el mis
 ## 5. Topics de MOD-001
 
 ```text
-mecacuy/MOD-001/telemetry   ESP32 -> EMQX -> Laravel
-mecacuy/MOD-001/command     Laravel -> EMQX -> ESP32
-mecacuy/MOD-001/ack         ESP32 -> EMQX -> Laravel
-mecacuy/MOD-001/status      ESP32 -> EMQX -> Laravel (retained + LWT)
+tesis/MOD-001/telemetry   ESP32 -> EMQX -> Laravel
+tesis/MOD-001/command     Laravel -> EMQX -> ESP32
+tesis/MOD-001/ack         ESP32 -> EMQX -> Laravel
+tesis/MOD-001/status      ESP32 -> EMQX -> Laravel (retained + LWT)
 ```
 
 El `status` usa Last Will and Testament: si el ESP32 pierde la conexión inesperadamente, EMQX publica `offline`.

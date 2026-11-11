@@ -2,7 +2,7 @@
 
 <div class="mc-pro-form-grid">
     <div class="mc-pro-field">
-        <label for="field_modulo_id">Módulo / jaula</label>
+        <label for="field_modulo_id">Módulo</label>
         <select id="field_modulo_id" name="modulo_id" required>
             <option value="">Seleccionar módulo</option>
             @foreach(($modulos ?? []) as $modulo)
@@ -22,7 +22,7 @@
 
     <div class="mc-pro-field">
         <label for="field_nombre">Nombre</label>
-        <input id="field_nombre" name="nombre" value="{{ old('nombre', $camara->nombre ?? '') }}" required placeholder="Cámara jaula 1">
+        <input id="field_nombre" name="nombre" value="{{ old('nombre', $camara->nombre ?? '') }}" required placeholder="Cámara 1">
         @error('nombre') <small>{{ $message }}</small> @enderror
     </div>
 

@@ -165,7 +165,7 @@ class SupervisionCalefaccionTest extends TestCase
         [$modulo, $actuador] = $this->equipo();
         config(['mqtt.webhook_secret' => 'test-secret']);
         $this->postJson('/api/mqtt/v1/webhook', [
-            'topic' => 'mecacuy/MOD-001/telemetry',
+            'topic' => 'tesis/MOD-001/telemetry',
             'payload' => ['lecturas' => [[
                 'codigo' => 'S_CONF_CALEF', 'valor' => 0, 'calidad' => 'ok', 'medido_en' => now()->toIso8601String(),
                 'raw' => ['driver' => 'acs712_ac', 'verificacion_valida' => true, 'revision' => 123, 'edad_muestra_ms' => 50],
@@ -197,18 +197,18 @@ class SupervisionCalefaccionTest extends TestCase
     public function test_setup_command_preserves_existing_calibration_and_checks_pin_conflicts(): void
     {
         [$modulo, , $sensor] = $this->equipo();
-        $this->artisan('mecacuy:calefaccion-configurar', ['modulo' => $modulo->codigo])->assertSuccessful();
+        $this->artisan('tesis:calefaccion-configurar', ['modulo' => $modulo->codigo])->assertSuccessful();
         $this->assertTrue($sensor->fresh()->meta['calibrado']);
         $sensor->delete();
         Sensor::create(['modulo_id' => $modulo->id, 'codigo' => 'OTRO', 'nombre' => 'Ocupado', 'tipo' => 'otro', 'gpio_pin' => 33]);
-        $this->artisan('mecacuy:calefaccion-configurar', ['modulo' => $modulo->codigo])->assertFailed();
+        $this->artisan('tesis:calefaccion-configurar', ['modulo' => $modulo->codigo])->assertFailed();
     }
 
     public function test_setup_command_registers_an_uncalibrated_sensor_without_switching_heater(): void
     {
         [$modulo, $actuador, $sensor] = $this->equipo(true);
         $sensor->delete();
-        $this->artisan('mecacuy:calefaccion-configurar', ['modulo' => $modulo->codigo])->assertSuccessful();
+        $this->artisan('tesis:calefaccion-configurar', ['modulo' => $modulo->codigo])->assertSuccessful();
         $this->assertFalse($modulo->sensores()->first()->meta['calibrado']);
         $this->assertSame(['on' => true], $actuador->fresh()->estado_deseado);
         $this->assertDatabaseCount('comandos_iot', 0);

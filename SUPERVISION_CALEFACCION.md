@@ -52,7 +52,7 @@ la capacidad de cortar un SSR físicamente averiado.
 3. Desde la carpeta de la aplicación ejecutar, usando el código real del calefactor:
 
 ```bash
-php artisan mecacuy:calefaccion-configurar MOD-001 --actuador=D_CALEF --gpio=33
+php artisan tesis:calefaccion-configurar MOD-001 --actuador=D_CALEF --gpio=33
 php artisan optimize:clear
 ```
 
@@ -61,7 +61,7 @@ Si el sensor ya existe, conserva sus parámetros. Si el pin está ocupado, no ca
 configuración. Alternativamente, registrar el sensor desde Sensores con el tipo
 Verificación calefacción y seleccionar el actuador del mismo módulo.
 
-4. Abrir `firmware_esp32/firmware_mecacuy_espanol/firmware_mecacuy_espanol.ino` en Arduino IDE.
+4. Abrir `firmware_esp32/firmware_tesis_espanol/firmware_tesis_espanol.ino` en Arduino IDE.
    Conservar `SupervisionCalefaccion.h` en la misma carpeta. Completar en privado las
    credenciales Wi-Fi, API y MQTT que ya utiliza el dispositivo.
 5. Seleccionar la placa ESP32 clásica correspondiente, compilar y cargar. Las pruebas
@@ -120,7 +120,7 @@ perder el sensor no demuestra que se resolvió.
 
 Debe mantenerse activo `php artisan schedule:run` cada minuto en el servidor para
 detectar pérdida de datos aunque deje de llegar telemetría. Se añadió la tarea
-`mecacuy:supervision-evaluar`; puede ejecutarse manualmente para comprobarla.
+`tesis:supervision-evaluar`; puede ejecutarse manualmente para comprobarla.
 La detección programada de dato vencido depende de ese intervalo de evaluación.
 
 ## Pruebas pendientes de hardware

@@ -20,7 +20,7 @@ class MqttBridgeService
 
     public function topic(string $moduloCodigo, string $canal): string
     {
-        $prefix = trim((string) config('mqtt.topic_prefix', 'mecacuy'), '/');
+        $prefix = trim((string) config('mqtt.topic_prefix', 'tesis'), '/');
         return $prefix.'/'.trim($moduloCodigo, '/').'/'.trim($canal, '/');
     }
 

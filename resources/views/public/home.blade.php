@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MecaCuy</title>
+    <title>Arquitectura híbrida de comunicación web y telemetría en entornos IoT | MecaCuy</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('landing/assets/images/favicons/apple-touch-icon.png') }}" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('landing/assets/images/favicons/favicon-32x32.png') }}" />
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('landing/assets/images/favicons/favicon-16x16.png') }}" />
-    <meta name="description" content="Diseño y modelado de una arquitectura mecatrónica basada en IoT para la automatización integral de módulos de crianza de cuyes." />
+    <meta name="description" content="Tesis de grado de la Universidad Pública de El Alto: arquitectura híbrida con HTTP, MQTT y WebSocket para gestionar dispositivos IoT, telemetría y comunicación web." />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +53,7 @@
         .problem-card h4,
         .problem-card p { color: #fff; }
         .problem-card {
-            background: #0f1b13;
+            background: #0f111b;
             border: 1px solid rgba(255,255,255,.08);
             border-radius: 20px;
             padding: 28px;
@@ -68,7 +68,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: #4baf47;
+            background: #161a59cc;
             color: #fff;
             font-size: 28px;
             margin-bottom: 18px;
@@ -113,10 +113,10 @@
                                             <ul class="main-menu__list">
                                                 <li><a href="#inicio">Inicio</a></li>
                                                 <li><a href="#proyecto">Proyecto</a></li>
-                                                <li><a href="#problema">Problema</a></li>
+                                                <li><a href="#problema">Desafíos</a></li>
                                                 <li><a href="#arquitectura">Arquitectura IoT</a></li>
                                                 <li><a href="#modulos">Módulos</a></li>
-                                                <li><a href="#beneficios">Beneficios</a></li>
+                                                <li><a href="#beneficios">Evaluación</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -154,11 +154,11 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="main-slider__content">
-                                    <p class="main-slider__sub-title">Automatización inteligente para crianza de cuyes</p>
-                                    <h2 class="main-slider__title">Arquitectura IoT</h2>
+                                    <p class="main-slider__sub-title">UNIVERSIDAD PÚBLICA DE EL ALTO · INGENIERÍA DE SISTEMAS</p>
+                                    <h2 class="main-slider__title">Arquitectura híbrida</h2>
                                     <div class="main-slider__btn-box">
                                         <a href="{{ route('login') }}" class="thm-btn main-slider__btn">
-                                            Inicio de sesión <i class="icon-right-arrow"></i>
+                                            Ingresar a la plataforma <i class="icon-right-arrow"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -174,11 +174,11 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="main-slider__content">
-                                    <p class="main-slider__sub-title">Automatización inteligente para crianza de cuyes</p>
-                                    <h2 class="main-slider__title">Arquitectura IoT</h2>
+                                    <p class="main-slider__sub-title">UNIVERSIDAD PÚBLICA DE EL ALTO · INGENIERÍA DE SISTEMAS</p>
+                                    <h2 class="main-slider__title">Monitoreo en entornos IoT</h2>
                                     <div class="main-slider__btn-box">
                                         <a href="{{ route('login') }}" class="thm-btn main-slider__btn">
-                                            Inicio de sesión <i class="icon-right-arrow"></i>
+                                            Ingresar a la plataforma <i class="icon-right-arrow"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -193,11 +193,11 @@
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="main-slider__content">
-                                    <p class="main-slider__sub-title">Automatización inteligente para crianza de cuyes</p>
-                                    <h2 class="main-slider__title">Arquitectura IoT</h2>
+                                    <p class="main-slider__sub-title">UNIVERSIDAD PÚBLICA DE EL ALTO · INGENIERÍA DE SISTEMAS</p>
+                                    <h2 class="main-slider__title">Telemetría y comunicación web</h2>
                                     <div class="main-slider__btn-box">
                                         <a href="{{ route('login') }}" class="thm-btn main-slider__btn">
-                                            Inicio de sesión <i class="icon-right-arrow"></i>
+                                            Ingresar a la plataforma <i class="icon-right-arrow"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -220,20 +220,20 @@
             <div class="row">
                 <div class="col-xl-4 col-lg-4 col-md-4">
                     <div class="feature-one__single">
-                        <div class="feature-one__icon"><span class="fas fa-temperature-low"></span></div>
-                        <div class="feature-one__content"><h3 class="feature-one__title">Control térmico <br> automatizado</h3></div>
+                        <div class="feature-one__icon"><span class="fas fa-microchip"></span></div>
+                        <div class="feature-one__content"><h3 class="feature-one__title">Adquisición de datos <br> desde dispositivos IoT</h3></div>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-4">
                     <div class="feature-one__single">
-                        <div class="feature-one__icon"><span class="fas fa-wifi"></span></div>
-                        <div class="feature-one__content"><h3 class="feature-one__title">Supervisión remota <br> en tiempo real</h3></div>
+                        <div class="feature-one__icon"><span class="fas fa-broadcast-tower"></span></div>
+                        <div class="feature-one__content"><h3 class="feature-one__title">Telemetría MQTT <br> y eventos web</h3></div>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-4 col-md-4">
                     <div class="feature-one__single">
-                        <div class="feature-one__icon"><span class="fas fa-chart-line"></span></div>
-                        <div class="feature-one__content"><h3 class="feature-one__title">Históricos y <br> apoyo a decisiones</h3></div>
+                        <div class="feature-one__icon"><span class="fas fa-clipboard-list"></span></div>
+                        <div class="feature-one__content"><h3 class="feature-one__title">Lecturas, órdenes <br> y estados trazables</h3></div>
                     </div>
                 </div>
             </div>
@@ -247,26 +247,26 @@
                     <div class="about-one__left">
                         <div class="section-title text-left">
                             <span class="section-title__tagline">Sobre el proyecto</span>
-                            <h2 class="section-title__title">Arquitectura mecatrónica para módulos inteligentes de crianza de cuyes</h2>
+                            <h2 class="section-title__title">Comunicación web y telemetría para entornos IoT</h2>
                             <div class="section-title__icon">
                                 <img src="{{ asset('landing/assets/images/icon/section-title-icon-1.png') }}" alt="icono">
                             </div>
                         </div>
                         <p class="about-one__text-2 text-justify">
-                            La propuesta se orienta al diseño y modelado de un sistema basado en IoT capaz de monitorear variables ambientales críticas dentro de cada módulo de crianza y accionar mecanismos automáticos de ventilación, calefacción y soporte operativo. El enfoque busca transformar la supervisión manual en una gestión continua, trazable y respaldada por datos.
+                            La tesis propone una arquitectura híbrida de comunicación web con HTTP, MQTT y WebSocket. El sistema coordina la administración de dispositivos, la recepción y persistencia de telemetría, el envío de órdenes y la actualización de la interfaz. Un prototipo de monitoreo y control con ESP32 permite evaluar estos flujos en un entorno definido.
                         </p>
                         <ul class="list-unstyled about-one__points">
                             <li>
                                 <div class="icon"><span class="icon-tick"></span></div>
-                                <div class="text"><p>Monitoreo en tiempo real de temperatura, humedad y gases.</p></div>
+                                <div class="text"><p>HTTP para la administración de dispositivos y las consultas de información.</p></div>
                             </li>
                             <li>
                                 <div class="icon"><span class="icon-tick"></span></div>
-                                <div class="text"><p>Control autónomo en lazo cerrado para mantener el microclima en rangos seguros.</p></div>
+                                <div class="text"><p>MQTT para intercambiar telemetría, órdenes y confirmaciones con los dispositivos.</p></div>
                             </li>
                             <li>
                                 <div class="icon"><span class="icon-tick"></span></div>
-                                <div class="text"><p>Infraestructura digital hibrida, backend e históricos de operación.</p></div>
+                                <div class="text"><p>WebSocket para distribuir eventos y cambios de estado hacia la interfaz web.</p></div>
                             </li>
                         </ul>
                     </div>
@@ -276,29 +276,29 @@
                         <div class="col-md-6">
                             <div class="mini-card">
                                 <div class="icon-box-custom"><i class="fas fa-microchip"></i></div>
-                                <h4>Procesamiento embebido</h4>
-                                <p>Uso de ESP32 como núcleo de adquisición, lógica local y conectividad.</p>
+                                <h4>Administración mediante HTTP</h4>
+                                <p>HTTP permite realizar operaciones administrativas y consultar los registros de la plataforma.</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mini-card">
                                 <div class="icon-box-custom"><i class="fas fa-fan"></i></div>
-                                <h4>Actuación inteligente</h4>
-                                <p>Ventiladores, calefactores y dosificación según condiciones críticas.</p>
+                                <h4>Telemetría con MQTT</h4>
+                                <p>MQTT conecta las publicaciones y órdenes del dispositivo con los servicios de la aplicación.</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mini-card">
                                 <div class="icon-box-custom"><i class="fas fa-database"></i></div>
-                                <h4>Gestión de datos</h4>
-                                <p>Registro histórico para análisis del comportamiento del microclima.</p>
+                                <h4>Eventos con WebSocket</h4>
+                                <p>WebSocket comunica eventos y cambios de estado a las sesiones web autorizadas.</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mini-card">
                                 <div class="icon-box-custom"><i class="fas fa-shield-alt"></i></div>
-                                <h4>Robustez operativa</h4>
-                                <p>Modo seguro ante fallos de conectividad o anomalías del sistema.</p>
+                                <h4>Prototipo con ESP32</h4>
+                                <p>El banco de pruebas permite generar mediciones y observar la respuesta a las órdenes de control.</p>
                             </div>
                         </div>
                     </div>
@@ -320,30 +320,30 @@
             <div class="row g-4">
                 <div class="col-xl-6 col-lg-6">
                     <div class="problem-card">
-                        <div class="icon-box-custom"><i class="fas fa-thermometer-half"></i></div>
-                        <h4>Inestabilidad microclimática</h4>
-                        <p>La falta de control automatizado de temperatura, humedad y calidad del aire expone a los animales a condiciones de estrés térmico y riesgo sanitario.</p>
+                        <div class="icon-box-custom"><i class="fas fa-stopwatch"></i></div>
+                        <h4>Latencia entre el dispositivo y la interfaz</h4>
+                        <p>Una lectura recorre el dispositivo, la aplicación y el navegador. La investigación medirá su tránsito entre las etapas de comunicación.</p>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
                     <div class="problem-card">
-                        <div class="icon-box-custom"><i class="fas fa-user-clock"></i></div>
-                        <h4>Dependencia de la supervisión humana</h4>
-                        <p>El operario no puede garantizar vigilancia permanente ni respuesta inmediata ante descensos térmicos o acumulación nocturna de gases.</p>
+                        <div class="icon-box-custom"><i class="fas fa-not-equal"></i></div>
+                        <h4>Desincronización de estados</h4>
+                        <p>Una lectura puede almacenarse antes de aparecer en pantalla. Los registros correlacionados permiten comparar la información de cada etapa.</p>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
                     <div class="problem-card">
-                        <div class="icon-box-custom"><i class="fas fa-exclamation-triangle"></i></div>
-                        <h4>Limitada trazabilidad</h4>
-                        <p>Sin adquisición continua de datos no existe base histórica suficiente para análisis, estadística ni mejora del manejo productivo.</p>
+                        <div class="icon-box-custom"><i class="fas fa-hourglass-half"></i></div>
+                        <h4>Órdenes sin confirmación comprobable</h4>
+                        <p>La aceptación de una solicitud no confirma por sí sola su recepción ni la ejecución de una orden en el dispositivo.</p>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-6">
                     <div class="problem-card">
-                        <div class="icon-box-custom"><i class="fas fa-layer-group"></i></div>
-                        <h4>Baja escalabilidad tecnológica</h4>
-                        <p>Los sistemas tradicionales carecen de modularidad para replicarse en múltiples jaulas o adaptarse a diferentes capacidades de producción.</p>
+                        <div class="icon-box-custom"><i class="fas fa-redo-alt"></i></div>
+                        <h4>Recuperación ante interrupciones</h4>
+                        <p>Las pruebas previstas observarán la reconexión, la recuperación de los canales y la sincronización posterior.</p>
                     </div>
                 </div>
             </div>
@@ -370,25 +370,25 @@
                             </div>
                         </div>
                         <p class="healthy-food-one__text text-justify">
-                            La solución integra percepción, procesamiento, actuación e interfaz. Los sensores capturan las condiciones del módulo, el controlador ejecuta la lógica de control, los actuadores estabilizan el ambiente y el backend consolida la información para visualización y análisis remoto.
+                            La propuesta distribuye las responsabilidades de comunicación entre HTTP, MQTT y WebSocket. El backend valida y almacena las lecturas; los comandos quedan relacionados con sus confirmaciones, y los eventos actualizan la información presentada en la interfaz web.
                         </p>
                         <ul class="list-unstyled healthy-food-one__list">
                             <li class="healthy-food-one__single">
                                 <div class="healthy-food-one__content">
-                                    <div class="healthy-food-one__icon"><span class="fas fa-thermometer-three-quarters"></span></div>
-                                    <p class="healthy-food-one__title">Sensores: temperatura, humedad y gases</p>
+                                    <div class="healthy-food-one__icon"><span class="fas fa-exchange-alt"></span></div>
+                                    <p class="healthy-food-one__title">HTTP · administración y consultas</p>
                                 </div>
                             </li>
                             <li class="healthy-food-one__single">
                                 <div class="healthy-food-one__content">
-                                    <div class="healthy-food-one__icon"><span class="fas fa-microchip"></span></div>
-                                    <p class="healthy-food-one__title">ESP32 y lógica local de control</p>
+                                    <div class="healthy-food-one__icon"><span class="fas fa-broadcast-tower"></span></div>
+                                    <p class="healthy-food-one__title">MQTT · telemetría, órdenes y confirmaciones</p>
                                 </div>
                             </li>
                             <li class="healthy-food-one__single">
                                 <div class="healthy-food-one__content">
-                                    <div class="healthy-food-one__icon"><span class="fas fa-server"></span></div>
-                                    <p class="healthy-food-one__title">Backend y panel de monitoreo</p>
+                                    <div class="healthy-food-one__icon"><span class="fas fa-bolt"></span></div>
+                                    <p class="healthy-food-one__title">WebSocket · eventos hacia la interfaz</p>
                                 </div>
                             </li>
                         </ul>
@@ -403,16 +403,16 @@
         <div class="container">
             <div class="section-title text-center">
                 <span class="section-title__tagline">Componentes del proyecto</span>
-                <h2 class="section-title__title">Subsistemas principales</h2>
+                <h2 class="section-title__title">Responsabilidades de la arquitectura</h2>
                 <div class="section-title__icon">
                     <img src="{{ asset('landing/assets/images/icon/section-title-icon-1.png') }}" alt="icono">
                 </div>
             </div>
             <div class="row g-4">
-                <div class="col-md-3"><div class="metric-box"><h3>01</h3><p>Adquisición de datos sensoriales</p></div></div>
-                <div class="col-md-3"><div class="metric-box"><h3>02</h3><p>Comunicación inalámbrica</p></div></div>
-                <div class="col-md-3"><div class="metric-box"><h3>03</h3><p>Control automático de actuadores</p></div></div>
-                <div class="col-md-3"><div class="metric-box"><h3>04</h3><p>Backend histórico y monitoreo remoto</p></div></div>
+                <div class="col-md-3"><div class="metric-box"><h3>HTTP</h3><p>Administración y consultas</p></div></div>
+                <div class="col-md-3"><div class="metric-box"><h3>MQTT</h3><p>Telemetría y órdenes</p></div></div>
+                <div class="col-md-3"><div class="metric-box"><h3>WebSocket</h3><p>Eventos para la interfaz</p></div></div>
+                <div class="col-md-3"><div class="metric-box"><h3>ESP32</h3><p>Prototipo de monitoreo y control</p></div></div>
             </div>
         </div>
     </section>
@@ -421,8 +421,8 @@
         <div class="project-one__bg float-bob-y-2" style="background-image: url({{ asset('landing/assets/images/shapes/project-one-shape-1.png') }});"></div>
         <div class="container">
             <div class="section-title text-center">
-                <span class="section-title__tagline">Aportes esperados</span>
-                <h2 class="section-title__title">Beneficios técnicos, productivos y sociales</h2>
+                <span class="section-title__tagline">Criterios de evaluación</span>
+                <h2 class="section-title__title">Indicadores para evaluar la comunicación IoT</h2>
                 <div class="section-title__icon">
                     <img src="{{ asset('landing/assets/images/icon/section-title-icon-1.png') }}" alt="icono">
                 </div>
@@ -431,10 +431,10 @@
                 <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="100ms">
                     <div class="project-one__single">
                         <div class="project-one__inner">
-                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-1.jpg') }}" alt="Estabilidad ambiental"></div>
+                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-1.jpg') }}" alt="Medición de tiempos de respuesta"></div>
                             <div class="project-one__content">
                                 <span class="project-one__tagline">Técnico</span>
-                                <h3 class="project-one__title">Mejora en la estabilidad ambiental del módulo</h3>
+                                <h3 class="project-one__title">Oportunidad en la visualización y la confirmación</h3>
                             </div>
                         </div>
                     </div>
@@ -442,10 +442,10 @@
                 <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="200ms">
                     <div class="project-one__single">
                         <div class="project-one__inner">
-                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-2.jpg') }}" alt="Optimización energética"></div>
+                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-2.jpg') }}" alt="Correspondencia entre lecturas y estados"></div>
                             <div class="project-one__content">
                                 <span class="project-one__tagline">Operativo</span>
-                                <h3 class="project-one__title">Optimización energética y reducción de intervención manual</h3>
+                                <h3 class="project-one__title">Consistencia entre el dispositivo, el servidor y la web</h3>
                             </div>
                         </div>
                     </div>
@@ -453,10 +453,10 @@
                 <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="300ms">
                     <div class="project-one__single">
                         <div class="project-one__inner">
-                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-3.jpg') }}" alt="Escalabilidad"></div>
+                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-3.jpg') }}" alt="Seguimiento de mensajes y confirmaciones"></div>
                             <div class="project-one__content">
                                 <span class="project-one__tagline">Diseño</span>
-                                <h3 class="project-one__title">Sistema modular y replicable en múltiples unidades</h3>
+                                <h3 class="project-one__title">Entrega de eventos y órdenes confirmadas</h3>
                             </div>
                         </div>
                     </div>
@@ -464,10 +464,10 @@
                 <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-delay="400ms">
                     <div class="project-one__single">
                         <div class="project-one__inner">
-                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-4.jpg') }}" alt="Modernización"></div>
+                            <div class="project-one__img"><img src="{{ asset('landing/assets/images/project/project-one-4.jpg') }}" alt="Reconexión y sincronización del estado"></div>
                             <div class="project-one__content">
                                 <span class="project-one__tagline">Impacto</span>
-                                <h3 class="project-one__title">Contribución tecnológica al sector pecuario local</h3>
+                                <h3 class="project-one__title">Recuperación de la comunicación ante interrupciones</h3>
                             </div>
                         </div>
                     </div>
@@ -484,10 +484,10 @@
                     <div class="cta-one__inner">
                         <div class="cta-one__left">
                             <div class="cta-one__icon"><span class="icon-agriculture-2"></span></div>
-                            <h3 class="cta-one__title">Proyecto académico orientado a la automatización integral <br> y el monitoreo inteligente de la crianza de cuyes.</h3>
+                            <h3 class="cta-one__title">Arquitectura híbrida de comunicación web y telemetría para gestionar dispositivos IoT, órdenes y eventos.</h3>
                         </div>
                         <div class="cta-one__right">
-                            <a href=" " class="thm-btn cta-one__btn">Ir al panel <i class="icon-right-arrow"></i></a>
+                            <a href=" " class="thm-btn cta-one__btn">Acceder al sistema <i class="icon-right-arrow"></i></a>
                         </div>
                     </div>
                 </div>
@@ -506,7 +506,7 @@
                                     <a href="#inicio"><img src="{{ asset('landing/assets/images/resources/footer-logo.png') }}" alt="MecaCuy"></a>
                                 </div>
                                 <div class="footer-widget__about-text-box">
-                                    <p class="footer-widget__about-text">MecaCuy es una propuesta de arquitectura mecatrónica basada en IoT para optimizar el control ambiental y operativo en módulos de crianza de cuyes.</p>
+                                    <p class="footer-widget__about-text">La tesis presenta una arquitectura híbrida que coordina la comunicación entre dispositivos IoT, servicios de aplicación e interfaz web.</p>
                                 </div>
                             </div>
                         </div>
@@ -515,10 +515,10 @@
                                 <div class="footer-widget__title-box"><h3 class="footer-widget__title">Secciones</h3></div>
                                 <ul class="footer-widget__Explore-list list-unstyled">
                                     <li><a href="#proyecto">Proyecto</a></li>
-                                    <li><a href="#problema">Problema</a></li>
+                                    <li><a href="#problema">Desafíos</a></li>
                                     <li><a href="#arquitectura">Arquitectura IoT</a></li>
                                     <li><a href="#modulos">Módulos</a></li>
-                                    <li><a href="#beneficios">Beneficios</a></li>
+                                    <li><a href="#beneficios">Evaluación</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -532,11 +532,11 @@
                                     </li>
                                     <li>
                                         <div class="icon"><span class="fas fa-chalkboard-teacher"></span></div>
-                                        <div class="text"><p>Tutor</p><h5>Msc. Ing. Jaime Eduardo Sánchez Guzmán</h5></div>
+                                        <div class="text"><p>Tutora metodológica</p><h5>M. Sc. Zara Yujra Cama</h5></div>
                                     </li>
                                     <li>
                                         <div class="icon"><span class="fas fa-university"></span></div>
-                                        <div class="text"><p>Institución</p><h5>UMSA · Ingeniería Mecatrónica</h5></div>
+                                        <div class="text"><p>Tutor especialista</p><h5>M. Sc. Lic. Ing. Rodolfo Freddy Velásquez Arando</h5></div>
                                     </li>
                                 </ul>
                             </div>
@@ -550,7 +550,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="site-footer__bottom-inner">
-                            <p class="site-footer__bottom-text">© {{ date('Y') }} MecaCuy · Proyecto de grado</p>
+                            <p class="site-footer__bottom-text">© {{ date('Y') }} UPEA · Tesis de grado</p>
                             <div class="site-footer__bottom-scroll">
                                 <a href="#" data-target="html" class="scroll-to-target scroll-to-top"><i class="icon-up-arrow"></i></a>
                             </div>

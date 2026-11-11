@@ -1,7 +1,7 @@
 services:
   mediamtx:
     image: bluenviron/mediamtx:latest
-    container_name: mecacuy-mediamtx
+    container_name: tesis-mediamtx
     restart: unless-stopped
     ports:
       - "8554:8554/tcp"   # RTSP

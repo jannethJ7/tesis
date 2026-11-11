@@ -19,7 +19,7 @@ const char* MODULO_UID    = "ESP32-MOD-001";
 const char* MODULO_CODIGO = "MOD-001";
 const char* DEVICE_KEY    = "TU_DEVICE_KEY_REGENERADA";
 const bool DEPURAR_CALIBRACION_CALEFACCION = false;
-const char* FW_VERSION    = "mecacuy-esp32-hibrido-2.3.0";
+const char* FW_VERSION    = "tesis-esp32-hibrido-2.3.0";
 
 // ========= MQTT (EMQX) =========
 // Conexion TLS a EMQX Cloud; REST se conserva como respaldo.
@@ -29,7 +29,7 @@ const char* MQTT_HOST = "ddb1331f.ala.eu-central-1.emqxsl.com";
 const uint16_t MQTT_PORT = 8883;
 const char* MQTT_USER = "esp32_mod001";
 const char* MQTT_PASS = "CAMBIAR_PASSWORD_MQTT";
-const char* MQTT_TOPIC_PREFIX = "mecacuy";
+const char* MQTT_TOPIC_PREFIX = "tesis";
 
 String URL_SYNC     = String(BASE_URL) + "/api/iot/v1/sync";
 String URL_LECTURAS = String(BASE_URL) + "/api/iot/v1/lecturas";
@@ -310,21 +310,21 @@ bool httpPOSTJson(const String& url, const String& body, String& out) {
 }
 
 bool saveSyncJson(const String& json) {
-  prefs.begin("mecacuy", false);
+  prefs.begin("tesis", false);
   bool ok = prefs.putString("sync_json", json) > 0;
   prefs.end();
   return ok;
 }
 
 String loadSyncJson() {
-  prefs.begin("mecacuy", true);
+  prefs.begin("tesis", true);
   String s = prefs.getString("sync_json", "");
   prefs.end();
   return s;
 }
 
 void loadNonceHistory() {
-  prefs.begin("mecacuy", true);
+  prefs.begin("tesis", true);
   String raw = prefs.getString("nonce_hist", "");
   prefs.end();
 
@@ -359,7 +359,7 @@ void saveNonceHistory() {
     raw += nonceHistory[i];
   }
 
-  prefs.begin("mecacuy", false);
+  prefs.begin("tesis", false);
   prefs.putString("nonce_hist", raw);
   prefs.end();
 }
@@ -1439,7 +1439,7 @@ void setup() {
 
   loadNonceHistory();
 
-  mqttClientId = String("mecacuy-") + MODULO_CODIGO + "-" + String((uint32_t)(ESP.getEfuseMac() & 0xFFFFFFFF), HEX);
+  mqttClientId = String("tesis-") + MODULO_CODIGO + "-" + String((uint32_t)(ESP.getEfuseMac() & 0xFFFFFFFF), HEX);
   mqttOfflinePayload = String("{\"status\":\"offline\",\"uid\":\"") + MODULO_UID + "\",\"codigo\":\"" + MODULO_CODIGO + "\"}";
 
   mqttClient

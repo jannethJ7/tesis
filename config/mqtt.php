@@ -2,7 +2,7 @@
 
 return [
     'enabled' => env('MQTT_ENABLED', false),
-    'topic_prefix' => trim(env('MQTT_TOPIC_PREFIX', 'mecacuy'), '/'),
+    'topic_prefix' => trim(env('MQTT_TOPIC_PREFIX', 'tesis'), '/'),
 
     // Credenciales usadas por los ESP32 para conectarse al broker MQTT.
     'broker_host' => env('MQTT_BROKER_HOST', '127.0.0.1'),

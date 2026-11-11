@@ -2,7 +2,7 @@
 @include('panel._partials.pro-assets')
 @section('title', 'Nueva cámara')
 @section('page-title', 'Nueva cámara')
-@section('page-subtitle', 'Asociar una fuente de video a una jaula o módulo MecaCuy')
+@section('page-subtitle', 'Asociar una fuente de video a un módulo')
 @section('content')
 <div class="mc-pro-page">
     @include('panel._partials.flash')

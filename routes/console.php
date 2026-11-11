@@ -9,18 +9,18 @@ use Illuminate\Support\Facades\Schedule;
 use App\Models\Lectura;
 use Illuminate\Support\Carbon;
 
-Artisan::command('mecacuy:supervision-evaluar', function (\App\Services\MotorAlertasAutomaticas $motor) {
+Artisan::command('tesis:supervision-evaluar', function (\App\Services\MotorAlertasAutomaticas $motor) {
     $resultado = $motor->evaluarTodos();
     $this->info(json_encode($resultado, JSON_UNESCAPED_UNICODE));
     return ($resultado['ok'] ?? false) ? 0 : 1;
 })->purpose('Evalúa alertas y pérdida de verificación aunque deje de llegar telemetría.');
-Schedule::command('mecacuy:supervision-evaluar')->everyMinute()->withoutOverlapping();
+Schedule::command('tesis:supervision-evaluar')->everyMinute()->withoutOverlapping();
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('mecacuy:programaciones-ejecutar {--modulo=}', function (MotorProgramaciones $motor) {
+Artisan::command('tesis:programaciones-ejecutar {--modulo=}', function (MotorProgramaciones $motor) {
     $moduloId = $this->option('modulo');
 
     $resultado = $moduloId
@@ -33,7 +33,7 @@ Artisan::command('mecacuy:programaciones-ejecutar {--modulo=}', function (MotorP
 })->purpose('Evalúa programaciones de MecaCuy y crea comandos IoT cuando corresponde.');
 
 
-Artisan::command('mecacuy:comandos-depurar {--modulo=}', function (GestorComandosIot $gestor) {
+Artisan::command('tesis:comandos-depurar {--modulo=}', function (GestorComandosIot $gestor) {
     $moduloId = $this->option('modulo');
 
     $resultado = $moduloId
@@ -45,15 +45,15 @@ Artisan::command('mecacuy:comandos-depurar {--modulo=}', function (GestorComando
     return ($resultado['ok'] ?? false) ? 0 : 1;
 })->purpose('Depura comandos IoT expirados o fallidos por falta de ACK.');
 
-Schedule::command('mecacuy:programaciones-ejecutar')
+Schedule::command('tesis:programaciones-ejecutar')
     ->everyMinute()
     ->withoutOverlapping();
 
 
-Schedule::command('mecacuy:comandos-depurar')
+Schedule::command('tesis:comandos-depurar')
     ->everyMinute()
     ->withoutOverlapping();
-Artisan::command('mecacuy:lecturas-limpiar {--dias=0}', function () {
+Artisan::command('tesis:lecturas-limpiar {--dias=0}', function () {
     $dias = max(1, (int) $this->option('dias'));
 
     $limite = Carbon::now()->subDays($dias);
@@ -65,6 +65,6 @@ Artisan::command('mecacuy:lecturas-limpiar {--dias=0}', function () {
 
     return 0;
 })->purpose('Elimina lecturas antiguas para evitar crecimiento excesivo de la base de datos.');
-Schedule::command('mecacuy:lecturas-limpiar --dias=2')
+Schedule::command('tesis:lecturas-limpiar --dias=2')
     ->dailyAt('03:00')
     ->withoutOverlapping();

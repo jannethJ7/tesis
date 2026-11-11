@@ -15,19 +15,19 @@ class SeedUsuariosIniciales extends Seeder
         $usuarios = [
             [
                 'name' => 'Administrador',
-                'email' => 'admin@mecacuy.com',
+                'email' => 'admin@tesis.com',
                 'password' => 'Admin12345',
                 'rol' => 'admin',
             ],
             [
                 'name' => 'Operador',
-                'email' => 'operador@mecacuy.com',
+                'email' => 'operador@tesis.com',
                 'password' => 'Operador12345',
                 'rol' => 'operador',
             ],
             [
                 'name' => 'Lector',
-                'email' => 'lector@mecacuy.com',
+                'email' => 'lector@tesis.com',
                 'password' => 'Lector12345',
                 'rol' => 'lector',
             ],
@@ -48,8 +48,8 @@ class SeedUsuariosIniciales extends Seeder
         }
 
         $this->command?->info("✅ Usuarios iniciales creados/actualizados:");
-        $this->command?->line("admin@mecacuy.com / Admin12345");
-        $this->command?->line("operador@mecacuy.com / Operador12345");
-        $this->command?->line("lector@mecacuy.com / Lector12345");
+        $this->command?->line("admin@tesis.com / Admin12345");
+        $this->command?->line("operador@tesis.com / Operador12345");
+        $this->command?->line("lector@tesis.com / Lector12345");
     }
 }

@@ -115,12 +115,12 @@ class IotSafetyTest extends TestCase
         config(['mqtt.webhook_secret' => 'test-secret']);
         $headers = ['X-MECACUY-MQTT-SECRET' => 'test-secret'];
         $this->postJson('/api/mqtt/v1/webhook', [
-            'topic' => 'mecacuy/MOD-TEST/ack',
+            'topic' => 'tesis/MOD-TEST/ack',
             'payload' => ['nonce' => 'mqtt-command', 'ok' => 'false'],
         ], $headers)->assertUnprocessable()->assertJsonValidationErrors('ok');
         $this->assertDatabaseHas('comandos_iot', ['id' => $id, 'estado' => 'enviado']);
         $this->postJson('/api/mqtt/v1/webhook', [
-            'topic' => 'mecacuy/MOD-TEST/telemetry',
+            'topic' => 'tesis/MOD-TEST/telemetry',
             'payload' => ['lecturas' => [['codigo' => 'S_TEMP', 'valor' => 20, 'medido_en' => 'invalid']]],
         ], $headers)->assertUnprocessable()->assertJsonValidationErrors('lecturas.0.medido_en');
         $this->assertNull($modulo->fresh()->ultimo_contacto);
