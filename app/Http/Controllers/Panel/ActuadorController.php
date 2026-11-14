@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Services\MqttBridgeService;
+use App\Events\ComandoActualizado;
+use App\Events\EstadoActuadorActualizado;
 use App\Http\Controllers\Controller;
 use App\Models\Actuador;
 use App\Models\Modulo;
+use App\Services\MqttBridgeService;
+use App\Services\NivelAgua;
+use App\Services\SupervisionCalefaccion;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class ActuadorController extends Controller
 {
@@ -32,9 +36,9 @@ class ActuadorController extends Controller
                 $buscar = $request->string('buscar');
                 $query->where(function ($q) use ($buscar) {
                     $q->where('codigo', 'like', "%{$buscar}%")
-                      ->orWhere('nombre', 'like', "%{$buscar}%")
-                      ->orWhere('tipo', 'like', "%{$buscar}%")
-                      ->orWhereHas('modulo', fn ($modulo) => $modulo->where('codigo', 'like', "%{$buscar}%")->orWhere('nombre', 'like', "%{$buscar}%"));
+                        ->orWhere('nombre', 'like', "%{$buscar}%")
+                        ->orWhere('tipo', 'like', "%{$buscar}%")
+                        ->orWhereHas('modulo', fn ($modulo) => $modulo->where('codigo', 'like', "%{$buscar}%")->orWhere('nombre', 'like', "%{$buscar}%"));
                 });
             })
             ->latest('id')
@@ -51,7 +55,7 @@ class ActuadorController extends Controller
 
     public function verificacion(Actuador $actuador): JsonResponse
     {
-        return response()->json(app(\App\Services\SupervisionCalefaccion::class)->paraActuador($actuador))
+        return response()->json(app(SupervisionCalefaccion::class)->paraActuador($actuador))
             ->header('Cache-Control', 'no-store, private');
     }
 
@@ -59,6 +63,7 @@ class ActuadorController extends Controller
     {
         $actuador = new Actuador(['activo' => true, 'invertido' => false]);
         $modulos = Modulo::orderBy('codigo')->get();
+
         return view('panel.actuadores.create', compact('actuador', 'modulos'));
     }
 
@@ -80,12 +85,14 @@ class ActuadorController extends Controller
     {
         $actuador->load('modulo');
         $actuaciones = $actuador->actuaciones()->latest('ejecutado_en')->paginate(15);
+
         return view('panel.actuadores.show', compact('actuador', 'actuaciones'));
     }
 
     public function edit(Actuador $actuador): View
     {
         $modulos = Modulo::orderBy('codigo')->get();
+
         return view('panel.actuadores.edit', compact('actuador', 'modulos'));
     }
 
@@ -107,14 +114,16 @@ class ActuadorController extends Controller
     {
         abort_unless((auth()->user()->rol ?? null) === 'admin', 403);
         $actuador->delete();
+
         return redirect()->route('panel.actuadores.index')->with('success', 'Actuador eliminado correctamente.');
     }
 
     private function validateData(Request $request, ?int $ignoreId = null): array
     {
         if ($request->boolean('activo')) {
-            \App\Services\NivelAgua::validarPinIndividual((int) $request->input('modulo_id'), $request->filled('gpio_pin') ? (int) $request->input('gpio_pin') : null);
+            NivelAgua::validarPinIndividual((int) $request->input('modulo_id'), $request->filled('gpio_pin') ? (int) $request->input('gpio_pin') : null);
         }
+
         return $request->validate([
             'modulo_id' => ['required', 'exists:modulos,id'],
             'codigo' => [
@@ -138,6 +147,7 @@ class ActuadorController extends Controller
     {
         return $request->filled($field) ? json_decode($request->input($field), true) : null;
     }
+
     public function manual(Request $request, Actuador $actuador): JsonResponse
     {
         abort_unless(in_array(auth()->user()->rol ?? null, ['admin', 'operador']), 403);
@@ -163,7 +173,7 @@ class ActuadorController extends Controller
             ], 423);
         }
 
-        if (!$actuador->activo) {
+        if (! $actuador->activo) {
             return response()->json([
                 'ok' => false,
                 'error' => 'El actuador está inactivo.',
@@ -265,7 +275,30 @@ class ActuadorController extends Controller
             'updated_at' => now(),
         ]);
 
-        DB::afterCommit(function () use ($comandoId) {
+        DB::afterCommit(function () use ($comandoId, $actuador, $estado) {
+            $comando = DB::table('comandos_iot')->where('id', $comandoId)->first();
+
+            if ($comando) {
+                ComandoActualizado::dispatch((int) $actuador->modulo_id, [
+                    'id' => (int) $comando->id,
+                    'actuador_id' => (int) $actuador->id,
+                    'nonce' => (string) $comando->nonce,
+                    'estado' => (string) $comando->estado,
+                    'intentos' => (int) $comando->intentos,
+                    'confirmado_en' => null,
+                    'ultimo_error' => null,
+                ]);
+            }
+
+            EstadoActuadorActualizado::dispatch((int) $actuador->modulo_id, [
+                'id' => (int) $actuador->id,
+                'codigo' => (string) $actuador->codigo,
+                'estado_deseado' => $estado,
+                'estado_reportado' => $actuador->estado_reportado,
+                'cambiado_en' => now()->toIso8601String(),
+                'nonce' => $comando->nonce ?? null,
+            ]);
+
             app(MqttBridgeService::class)->despacharComando((int) $comandoId);
         });
     }
@@ -278,5 +311,4 @@ class ActuadorController extends Controller
             default => 'Comando manual enviado.',
         };
     }
-
 }

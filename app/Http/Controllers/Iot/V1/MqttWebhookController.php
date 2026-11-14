@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Iot\V1;
 
+use App\Events\PresenciaModuloActualizada;
 use App\Services\ProcesadorAckIot;
 use App\Services\ProcesadorTelemetriaIot;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class MqttWebhookController
         $esperado = (string) config('mqtt.webhook_secret');
         $recibido = (string) $request->header('X-MECACUY-MQTT-SECRET');
 
-        if ($esperado === '' || $recibido === '' || !hash_equals($esperado, $recibido)) {
+        if ($esperado === '' || $recibido === '' || ! hash_equals($esperado, $recibido)) {
             return response()->json(['ok' => false, 'error' => 'Webhook MQTT no autorizado.'], 401);
         }
 
@@ -31,13 +32,13 @@ class MqttWebhookController
         $payload = $data['payload'];
         if (is_string($payload)) {
             $decoded = json_decode($payload, true);
-            if (!is_array($decoded)) {
+            if (! is_array($decoded)) {
                 return response()->json(['ok' => false, 'error' => 'Payload MQTT no es JSON válido.'], 422);
             }
             $payload = $decoded;
         }
 
-        if (!is_array($payload)) {
+        if (! is_array($payload)) {
             return response()->json(['ok' => false, 'error' => 'Payload MQTT inválido.'], 422);
         }
 
@@ -55,7 +56,7 @@ class MqttWebhookController
             ->where('habilitado', 1)
             ->first();
 
-        if (!$modulo) {
+        if (! $modulo) {
             return response()->json(['ok' => false, 'error' => 'Módulo MQTT no encontrado.'], 404);
         }
 
@@ -93,18 +94,18 @@ class MqttWebhookController
 
         if ($canal === 'telemetry') {
             $lecturas = $payload['lecturas'] ?? null;
-            if (!is_array($lecturas) || empty($lecturas)) {
+            if (! is_array($lecturas) || empty($lecturas)) {
                 return response()->json(['ok' => false, 'error' => 'telemetry requiere lecturas[].'], 422);
             }
 
             return response()->json(
-                app(ProcesadorTelemetriaIot::class)->procesar($modulo, $lecturas)
+                app(ProcesadorTelemetriaIot::class)->procesar($modulo, $lecturas, 'mqtt')
                 + ['canal' => 'mqtt']
             );
         }
 
         if ($canal === 'ack') {
-            if (empty($payload['nonce']) || !array_key_exists('ok', $payload)) {
+            if (empty($payload['nonce']) || ! array_key_exists('ok', $payload)) {
                 return response()->json(['ok' => false, 'error' => 'ack requiere nonce y ok.'], 422);
             }
 
@@ -133,7 +134,7 @@ class MqttWebhookController
     private function actualizarContacto(object $modulo, array $payload, ?string $clientId, string $canal): void
     {
         $meta = json_decode($modulo->meta ?? '{}', true);
-        if (!is_array($meta)) {
+        if (! is_array($meta)) {
             $meta = [];
         }
 
@@ -147,7 +148,7 @@ class MqttWebhookController
         try {
             $update = [
                 'rssi' => isset($payload['rssi']) && is_numeric($payload['rssi']) ? (int) $payload['rssi'] : $modulo->rssi,
-                'version_firmware' => !empty($payload['fw']) ? (string) $payload['fw'] : $modulo->version_firmware,
+                'version_firmware' => ! empty($payload['fw']) ? (string) $payload['fw'] : $modulo->version_firmware,
                 'meta' => json_encode($meta),
                 'updated_at' => now(),
             ];
@@ -159,6 +160,15 @@ class MqttWebhookController
             }
 
             DB::table('modulos')->where('id', $modulo->id)->update($update);
+
+            PresenciaModuloActualizada::dispatch((int) $modulo->id, [
+                'online' => ($payload['status'] ?? null) !== 'offline',
+                'canal' => 'mqtt',
+                'estado' => $payload['status'] ?? null,
+                'ultimo_contacto' => isset($update['ultimo_contacto'])
+                    ? $update['ultimo_contacto']->toIso8601String()
+                    : $modulo->ultimo_contacto,
+            ]);
         } catch (\Throwable $e) {
             Log::warning('No se pudo actualizar telemetría de contacto MQTT.', [
                 'modulo_id' => $modulo->id,

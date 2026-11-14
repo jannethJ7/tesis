@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Panel\PanelController;
 use App\Http\Controllers\Panel\ActuadorController;
 use App\Http\Controllers\Panel\AjusteSistemaController;
 use App\Http\Controllers\Panel\AlertaController;
 use App\Http\Controllers\Panel\CamaraController;
 use App\Http\Controllers\Panel\LecturaController;
 use App\Http\Controllers\Panel\ModuloController;
+use App\Http\Controllers\Panel\PanelController;
 use App\Http\Controllers\Panel\ProgramacionController;
 use App\Http\Controllers\Panel\ReglaAutomaticaController;
 use App\Http\Controllers\Panel\ReporteLecturaController;
 use App\Http\Controllers\Panel\SensorController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn () => view('public.home'))->name('home');
@@ -42,6 +42,10 @@ Route::middleware(['auth'])->group(function () {
         // Primero van las rutas estáticas de administración, como /modulos/create.
         // Si se registran después de /modulos/{modulo}, Laravel interpreta "create"
         // como si fuera un ID de módulo y devuelve 404 por model binding.
+        Route::get('modulos/{modulo}/estado', [ModuloController::class, 'estado'])
+            ->middleware('role:admin,operador')
+            ->name('modulos.estado');
+
         Route::resource('modulos', ModuloController::class)
             ->except(['index', 'show'])
             ->middleware('role:admin')
@@ -171,12 +175,10 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('role:admin,operador')
             ->name('alertas.cerrar');
 
-        
         Route::prefix('automatizacion')
             ->name('automatizacion.')
             ->group(function () {
 
-                
                 Route::get('reglas/create', [ReglaAutomaticaController::class, 'create'])
                     ->middleware('role:admin')
                     ->name('reglas.create');
@@ -213,7 +215,6 @@ Route::middleware(['auth'])->group(function () {
                     ->whereNumber('regla')
                     ->name('reglas.show');
 
-                
                 Route::get('programaciones/create', [ProgramacionController::class, 'create'])
                     ->middleware('role:admin')
                     ->name('programaciones.create');
@@ -251,7 +252,6 @@ Route::middleware(['auth'])->group(function () {
                     ->name('programaciones.show');
             });
 
-        
         Route::get('ajustes/sistema', [AjusteSistemaController::class, 'edit'])
             ->middleware('role:admin,operador')
             ->name('ajustes.sistema');
@@ -260,12 +260,10 @@ Route::middleware(['auth'])->group(function () {
             ->middleware('role:admin,operador')
             ->name('ajustes.sistema.update');
 
-        
         Route::get('reportes/lecturas', [ReporteLecturaController::class, 'index'])
             ->name('reportes.lecturas');
     });
 
-    
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 
@@ -280,4 +278,4 @@ Route::middleware(['auth'])->group(function () {
         ->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

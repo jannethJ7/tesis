@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Events\PresenciaModuloActualizada;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,7 @@ class ModuloIotAuth
         $uid = $request->header('X-MODULO-UID');   // Ej: ESP32-MOD-001
         $key = $request->header('X-DEVICE-KEY');   // API key del módulo
 
-        if (!$uid || !$key) {
+        if (! $uid || ! $key) {
             return response()->json([
                 'ok' => false,
                 'error' => 'Faltan headers: X-MODULO-UID y/o X-DEVICE-KEY',
@@ -23,7 +24,7 @@ class ModuloIotAuth
         }
 
         $modulo = DB::table('modulos')->where('uid', $uid)->first();
-        if (!$modulo || !(bool)$modulo->habilitado) {
+        if (! $modulo || ! (bool) $modulo->habilitado) {
             return response()->json([
                 'ok' => false,
                 'error' => 'Módulo no encontrado o deshabilitado',
@@ -34,14 +35,14 @@ class ModuloIotAuth
             ->where('modulo_id', $modulo->id)
             ->first();
 
-        if (!$cred || $cred->revocado_en) {
+        if (! $cred || $cred->revocado_en) {
             return response()->json([
                 'ok' => false,
                 'error' => 'Credencial inexistente o revocada',
             ], 401);
         }
 
-        if (!Hash::check($key, $cred->api_key_hash)) {
+        if (! Hash::check($key, $cred->api_key_hash)) {
             return response()->json([
                 'ok' => false,
                 'error' => 'API key inválida',
@@ -49,21 +50,27 @@ class ModuloIotAuth
         }
 
         // Telemetría opcional
-        $ip   = $request->ip();
+        $ip = $request->ip();
         $rssi = $request->header('X-RSSI');
-        $fw   = $request->header('X-FW');
+        $fw = $request->header('X-FW');
 
         DB::table('modulos')->where('id', $modulo->id)->update([
-            'ultimo_contacto'   => now(),
-            'ip'                => $ip,
-            'rssi'              => is_numeric($rssi) ? (int)$rssi : $modulo->rssi,
-            'version_firmware'  => $fw ?: $modulo->version_firmware,
-            'updated_at'        => now(),
+            'ultimo_contacto' => now(),
+            'ip' => $ip,
+            'rssi' => is_numeric($rssi) ? (int) $rssi : $modulo->rssi,
+            'version_firmware' => $fw ?: $modulo->version_firmware,
+            'updated_at' => now(),
         ]);
 
         DB::table('modulos_credenciales')->where('id', $cred->id)->update([
             'ultimo_uso_en' => now(),
-            'updated_at'    => now(),
+            'updated_at' => now(),
+        ]);
+
+        PresenciaModuloActualizada::dispatch((int) $modulo->id, [
+            'online' => true,
+            'canal' => 'rest',
+            'ultimo_contacto' => now()->toIso8601String(),
         ]);
 
         // Guardamos el módulo en el request para usarlo en el controlador

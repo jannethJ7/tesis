@@ -2,27 +2,31 @@
 
 namespace App\Services;
 
+use App\Events\LecturaRegistrada;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class ProcesadorTelemetriaIot
 {
-    public function procesar(object $modulo, array $lecturas): array
+    public function procesar(object $modulo, array $lecturas, string $canal = 'rest'): array
     {
         $now = now();
         $guardadas = 0;
         $omitidas = [];
+        $eventos = [];
 
         foreach ($lecturas as $i => $l) {
             $codigoSensor = $l['codigo'] ?? $l['sensor'] ?? null;
 
-            if (!$codigoSensor) {
+            if (! $codigoSensor) {
                 $omitidas[] = [
                     'indice' => $i,
                     'codigo' => null,
                     'motivo' => 'codigo_sensor_ausente',
                 ];
+
                 continue;
             }
 
@@ -31,37 +35,41 @@ class ProcesadorTelemetriaIot
                 ->where('codigo', $codigoSensor)
                 ->first();
 
-            if (!$sensor) {
+            if (! $sensor) {
                 $omitidas[] = [
                     'indice' => $i,
                     'codigo' => $codigoSensor,
                     'motivo' => 'sensor_no_encontrado_en_el_modulo',
                 ];
+
                 continue;
             }
 
-            if (!(bool) $sensor->activo) {
+            if (! (bool) $sensor->activo) {
                 $omitidas[] = [
                     'indice' => $i,
                     'codigo' => $codigoSensor,
                     'motivo' => 'sensor_inactivo',
                 ];
+
                 continue;
             }
 
-            if (!array_key_exists('valor', $l) || !is_numeric($l['valor'])) {
+            if (! array_key_exists('valor', $l) || ! is_numeric($l['valor'])) {
                 $omitidas[] = [
                     'indice' => $i,
                     'codigo' => $codigoSensor,
                     'motivo' => 'valor_invalido',
                 ];
+
                 continue;
             }
 
             $medidoEn = $l['medido_en'] ?? $now;
             if (SupervisionCalefaccion::esSensor($sensor)) {
-                if ($sensor->valor_actual_en && \Carbon\Carbon::parse($medidoEn)->lt(\Carbon\Carbon::parse($sensor->valor_actual_en))) {
+                if ($sensor->valor_actual_en && Carbon::parse($medidoEn)->lt(Carbon::parse($sensor->valor_actual_en))) {
                     $omitidas[] = ['indice' => $i, 'codigo' => $codigoSensor, 'motivo' => 'verificacion_antigua'];
+
                     continue;
                 }
                 // Sin hora de adquisición no se puede descartar un mensaje MQTT retenido/retrasado.
@@ -72,22 +80,27 @@ class ProcesadorTelemetriaIot
                 }
             }
             if (NivelAgua::esSensor($sensor)) {
-                if ($sensor->valor_actual_en && \Carbon\Carbon::parse($medidoEn)->lt(\Carbon\Carbon::parse($sensor->valor_actual_en))) {
+                if ($sensor->valor_actual_en && Carbon::parse($medidoEn)->lt(Carbon::parse($sensor->valor_actual_en))) {
                     $omitidas[] = ['indice' => $i, 'codigo' => $codigoSensor, 'motivo' => 'nivel_agua_antiguo'];
+
                     continue;
                 }
                 $rawAgua = $l['raw'] ?? [];
-                $valida = !empty($l['medido_en']) && ($l['calidad'] ?? 'ok') === 'ok' && ($rawAgua['driver'] ?? '') === NivelAgua::DRIVER
+                $valida = ! empty($l['medido_en']) && ($l['calidad'] ?? 'ok') === 'ok' && ($rawAgua['driver'] ?? '') === NivelAgua::DRIVER
                     && ($rawAgua['perfil'] ?? '') === NivelAgua::PERFIL && ($rawAgua['nivel_valido'] ?? false) === true
                     && is_numeric($rawAgua['edad_muestra_ms'] ?? null) && $rawAgua['edad_muestra_ms'] >= 0 && $rawAgua['edad_muestra_ms'] <= 2000
                     && in_array((float) $l['valor'], [0.0, 25.0, 50.0, 75.0, 100.0], true);
-                if (!$valida) { $l['valor'] = -1; $l['calidad'] = 'error'; }
+                if (! $valida) {
+                    $l['valor'] = -1;
+                    $l['calidad'] = 'error';
+                }
             }
             $raw = is_array($l['raw'] ?? null) ? $l['raw'] : [];
             $raw['codigo_recibido'] = $codigoSensor;
             $raw['campo_codigo_usado'] = array_key_exists('codigo', $l) ? 'codigo' : 'sensor';
+            $raw['canal'] = $canal;
 
-            DB::table('lecturas')->insert([
+            $lecturaId = DB::table('lecturas')->insertGetId([
                 'sensor_id' => $sensor->id,
                 'valor' => $l['valor'],
                 'medido_en' => $medidoEn,
@@ -105,6 +118,18 @@ class ProcesadorTelemetriaIot
             ]);
 
             $guardadas++;
+            $eventos[] = [
+                'id' => (int) $lecturaId,
+                'sensor_id' => (int) $sensor->id,
+                'sensor_codigo' => (string) $sensor->codigo,
+                'sensor_nombre' => (string) $sensor->nombre,
+                'valor' => (float) $l['valor'],
+                'unidad' => $sensor->unidad,
+                'calidad' => $l['calidad'] ?? 'ok',
+                'medido_en' => Carbon::parse($medidoEn)->toIso8601String(),
+                'recibido_en' => $now->toIso8601String(),
+                'canal' => $canal,
+            ];
         }
 
         $resultadoReglas = null;
@@ -130,6 +155,13 @@ class ProcesadorTelemetriaIot
                 ]);
                 $resultadoAlertas = ['ok' => false, 'error' => 'No se pudieron evaluar las alertas automáticas.'];
             }
+        }
+
+        // Los eventos se crean únicamente después de persistir las lecturas y
+        // completar la evaluación del dominio. ShouldBroadcast los entrega por
+        // la cola sin duplicar el procesamiento REST/MQTT.
+        foreach ($eventos as $evento) {
+            LecturaRegistrada::dispatch((int) $modulo->id, $evento);
         }
 
         return [

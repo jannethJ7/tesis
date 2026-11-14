@@ -3,16 +3,14 @@
 namespace App\Http\Controllers\Iot\V1;
 
 use App\Services\GestorComandosIot;
+use App\Services\MotorProgramaciones;
 use App\Services\ProcesadorAckIot;
 use App\Services\ProcesadorTelemetriaIot;
-use App\Services\MotorAlertasAutomaticas;
-use App\Services\MotorProgramaciones;
-use App\Services\MotorReglasAutomaticas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class ControladorIot
 {
@@ -37,25 +35,25 @@ class ControladorIot
             }
         }
 
-        if (!empty($erroresCodigo)) {
+        if (! empty($erroresCodigo)) {
             throw ValidationException::withMessages($erroresCodigo);
         }
 
-        $resultado = app(ProcesadorTelemetriaIot::class)->procesar($modulo, $data['lecturas']);
+        $resultado = app(ProcesadorTelemetriaIot::class)->procesar($modulo, $data['lecturas'], 'rest');
 
         return response()->json($resultado);
     }
 
     /**
      * GET /api/iot/v1/sync
-     * Devuelve config + sensores/actuadores + 1 comando pendiente 
+     * Devuelve config + sensores/actuadores + 1 comando pendiente
      */
     public function sync(Request $request)
     {
         $modulo = $request->attributes->get('iot_modulo');
 
         $modoGlobal = $this->getConfig('modo_global', 'manual');
-        $staleMin   = (int) $this->getConfig('stale_min', 10);
+        $staleMin = (int) $this->getConfig('stale_min', 10);
 
         $resultadoProgramaciones = null;
 
@@ -77,13 +75,13 @@ class ControladorIot
             ->where('modulo_id', $modulo->id)
             ->where('activo', 1)
             ->orderBy('id')
-            ->get(['codigo','tipo','unidad','gpio_pin','valor_actual','valor_actual_en','meta']);
+            ->get(['codigo', 'tipo', 'unidad', 'gpio_pin', 'valor_actual', 'valor_actual_en', 'meta']);
 
         $actuadores = DB::table('actuadores')
             ->where('modulo_id', $modulo->id)
             ->where('activo', 1)
             ->orderBy('id')
-            ->get(['id','codigo','tipo','gpio_pin','estado_deseado','invertido','meta']);
+            ->get(['id', 'codigo', 'tipo', 'gpio_pin', 'estado_deseado', 'invertido', 'meta']);
 
         $resultadoComandos = null;
         $cmd = null;
@@ -119,11 +117,11 @@ class ControladorIot
             'config' => [
                 'modulo' => [
                     'codigo' => $modulo->codigo,
-                    'uid'    => $modulo->uid,
+                    'uid' => $modulo->uid,
                     'zona_horaria' => $modulo->zona_horaria,
                 ],
-                'modo_global'   => $modoGlobal,
-                'stale_min'     => $staleMin,
+                'modo_global' => $modoGlobal,
+                'stale_min' => $staleMin,
                 'iot_ack_timeout_seg' => (int) $this->getConfig('iot_ack_timeout_seg', 20),
                 'iot_max_intentos' => (int) $this->getConfig('iot_max_intentos', 3),
                 'hora_servidor' => now()->toDateTimeString(),
@@ -145,7 +143,7 @@ class ControladorIot
                     'codigo' => $a->codigo,
                     'tipo' => $a->tipo,
                     'gpio_pin' => is_null($a->gpio_pin) ? null : (int) $a->gpio_pin,
-                    'invertido' => (bool)$a->invertido,
+                    'invertido' => (bool) $a->invertido,
                     'estado_deseado' => $a->estado_deseado ? json_decode($a->estado_deseado, true) : null,
                     'meta' => $a->meta ? json_decode($a->meta, true) : null,
                 ];
@@ -200,9 +198,12 @@ class ControladorIot
     private function getConfig(string $clave, $default = null)
     {
         $row = DB::table('config_sistema')->where('clave', $clave)->first();
-        if (!$row) return $default;
+        if (! $row) {
+            return $default;
+        }
 
         $val = json_decode($row->valor, true);
+
         return $val ?? $default;
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Modulo;
 use App\Services\ActividadRecienteService;
 use App\Services\SeriesLecturasService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +22,8 @@ class ModuloController extends Controller
                 $buscar = $request->string('buscar');
                 $query->where(function ($q) use ($buscar) {
                     $q->where('codigo', 'like', "%{$buscar}%")
-                      ->orWhere('nombre', 'like', "%{$buscar}%")
-                      ->orWhere('uid', 'like', "%{$buscar}%");
+                        ->orWhere('nombre', 'like', "%{$buscar}%")
+                        ->orWhere('uid', 'like', "%{$buscar}%");
                 });
             })
             ->latest('id')
@@ -35,6 +36,7 @@ class ModuloController extends Controller
     public function create(): View
     {
         $modulo = new Modulo(['habilitado' => true, 'zona_horaria' => 'America/La_Paz']);
+
         return view('panel.modulos.create', compact('modulo'));
     }
 
@@ -91,6 +93,51 @@ class ModuloController extends Controller
         ));
     }
 
+    public function estado(Modulo $modulo): JsonResponse
+    {
+        $modulo->load(['sensores', 'actuadores']);
+
+        $staleMin = max((int) $this->configValor('stale_min', 5), 1);
+        $ultimoContacto = collect([$modulo->ultimo_contacto])
+            ->merge($modulo->sensores->pluck('valor_actual_en'))
+            ->filter()
+            ->sortDesc()
+            ->first();
+
+        $online = $modulo->habilitado
+            && $ultimoContacto
+            && $ultimoContacto->greaterThanOrEqualTo(now()->subMinutes($staleMin));
+
+        return response()->json([
+            'ok' => true,
+            'version' => now()->getTimestampMs(),
+            'modulo' => [
+                'id' => $modulo->id,
+                'codigo' => $modulo->codigo,
+                'habilitado' => $modulo->habilitado,
+                'online' => (bool) $online,
+                'ultimo_contacto' => optional($ultimoContacto)->toIso8601String(),
+                'stale_min' => $staleMin,
+            ],
+            'sensores' => $modulo->sensores->map(fn ($sensor) => [
+                'id' => $sensor->id,
+                'codigo' => $sensor->codigo,
+                'nombre' => $sensor->nombre,
+                'tipo' => $sensor->tipo,
+                'unidad' => $sensor->unidad,
+                'valor' => $sensor->valor_actual !== null ? (float) $sensor->valor_actual : null,
+                'medido_en' => optional($sensor->valor_actual_en)->toIso8601String(),
+            ])->values(),
+            'actuadores' => $modulo->actuadores->map(fn ($actuador) => [
+                'id' => $actuador->id,
+                'codigo' => $actuador->codigo,
+                'estado_deseado' => $actuador->estado_deseado,
+                'estado_reportado' => $actuador->estado_reportado,
+                'cambiado_en' => optional($actuador->cambiado_en)->toIso8601String(),
+            ])->values(),
+        ])->header('Cache-Control', 'no-store, private');
+    }
+
     public function edit(Modulo $modulo): View
     {
         return view('panel.modulos.edit', compact('modulo'));
@@ -116,7 +163,6 @@ class ModuloController extends Controller
         return redirect()->route('panel.modulos.index')->with('success', 'Módulo eliminado correctamente.');
     }
 
-
     private function configValor(string $clave, mixed $default = null): mixed
     {
         $valor = DB::table('config_sistema')->where('clave', $clave)->value('valor');
@@ -132,12 +178,12 @@ class ModuloController extends Controller
 
     private function validateData(Request $request, ?int $ignoreId = null): array
     {
-        $idRule = $ignoreId ? ',' . $ignoreId : '';
+        $idRule = $ignoreId ? ','.$ignoreId : '';
 
         return $request->validate([
-            'codigo' => ['required', 'string', 'max:50', 'unique:modulos,codigo' . $idRule],
+            'codigo' => ['required', 'string', 'max:50', 'unique:modulos,codigo'.$idRule],
             'nombre' => ['nullable', 'string', 'max:120'],
-            'uid' => ['required', 'string', 'max:100', 'unique:modulos,uid' . $idRule],
+            'uid' => ['required', 'string', 'max:100', 'unique:modulos,uid'.$idRule],
             'version_firmware' => ['nullable', 'string', 'max:40'],
             'ip' => ['nullable', 'string', 'max:45'],
             'rssi' => ['nullable', 'integer'],

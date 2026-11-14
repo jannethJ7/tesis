@@ -2,13 +2,17 @@
 
 namespace App\Services;
 
+use App\Events\ComandoActualizado;
+use App\Events\EstadoActuadorActualizado;
 use Illuminate\Support\Facades\DB;
 
 class ProcesadorAckIot
 {
     public function procesar(object $modulo, string $nonce, bool $ok, ?string $error = null, array $reportados = []): array
     {
-        return DB::transaction(function () use ($modulo, $nonce, $ok, $error, $reportados) {
+        $resultado = DB::transaction(function () use ($modulo, $nonce, $ok, $error, $reportados) {
+            $actuadoresActualizados = [];
+
             // Serializa los ACK del mismo comando entre REST y MQTT.
             $comando = DB::table('comandos_iot')
                 ->where('modulo_id', $modulo->id)
@@ -23,20 +27,20 @@ class ProcesadorAckIot
                 $error
             );
 
-            if (!($resultadoAck['ok'] ?? false)) {
+            if (! ($resultadoAck['ok'] ?? false)) {
                 return ['ok' => false, 'ack' => $resultadoAck];
             }
 
-            if (!empty($resultadoAck['duplicado'])) {
+            if (! empty($resultadoAck['duplicado'])) {
                 return ['ok' => true, 'ack' => $resultadoAck, 'alerta_comando' => null];
             }
 
-            if (!empty($reportados)) {
+            if (! empty($reportados)) {
                 foreach ($reportados as $rep) {
                     $codigo = $rep['actuador'] ?? null;
                     $estado = $rep['estado'] ?? null;
 
-                    if (!$codigo || !is_array($estado)) {
+                    if (! $codigo || ! is_array($estado)) {
                         continue;
                     }
 
@@ -45,7 +49,7 @@ class ProcesadorAckIot
                         ->where('codigo', $codigo)
                         ->first();
 
-                    if (!$act || ($comando->actuador_id && (int) $act->id !== (int) $comando->actuador_id)) {
+                    if (! $act || ($comando->actuador_id && (int) $act->id !== (int) $comando->actuador_id)) {
                         continue;
                     }
 
@@ -65,9 +69,20 @@ class ProcesadorAckIot
                         'updated_at' => now(),
                     ]);
 
+                    $actuadoresActualizados[] = [
+                        'id' => (int) $act->id,
+                        'codigo' => (string) $act->codigo,
+                        'estado_deseado' => $act->estado_deseado
+                            ? json_decode($act->estado_deseado, true)
+                            : null,
+                        'estado_reportado' => $estado,
+                        'cambiado_en' => now()->toIso8601String(),
+                        'nonce' => $nonce,
+                    ];
+
                     // El mismo ACK puede llegar por MQTT y luego por REST durante una
                     // transición. No duplicamos la actuación si el estado no cambió.
-                    if (!$yaEraMismoEstado) {
+                    if (! $yaEraMismoEstado) {
                         DB::table('actuaciones')->insert([
                             'modulo_id' => $modulo->id,
                             'actuador_id' => $act->id,
@@ -91,7 +106,33 @@ class ProcesadorAckIot
                 'ok' => true,
                 'ack' => $resultadoAck,
                 'alerta_comando' => $resultadoAck['alerta_comando'] ?? null,
+                'actuadores_actualizados' => $actuadoresActualizados,
             ];
         });
+
+        if (($resultado['ok'] ?? false) && empty($resultado['ack']['duplicado'])) {
+            $comando = DB::table('comandos_iot')
+                ->where('modulo_id', $modulo->id)
+                ->where('nonce', $nonce)
+                ->first();
+
+            if ($comando) {
+                ComandoActualizado::dispatch((int) $modulo->id, [
+                    'id' => (int) $comando->id,
+                    'actuador_id' => $comando->actuador_id ? (int) $comando->actuador_id : null,
+                    'nonce' => (string) $comando->nonce,
+                    'estado' => (string) $comando->estado,
+                    'intentos' => (int) $comando->intentos,
+                    'confirmado_en' => $comando->confirmado_en,
+                    'ultimo_error' => $comando->ultimo_error,
+                ]);
+            }
+
+            foreach ($resultado['actuadores_actualizados'] ?? [] as $actuador) {
+                EstadoActuadorActualizado::dispatch((int) $modulo->id, $actuador);
+            }
+        }
+
+        return $resultado;
     }
 }

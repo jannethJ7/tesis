@@ -17,9 +17,9 @@ class ModuleCameraViewTest extends TestCase
         $user = User::factory()->create(['rol' => 'admin']);
         $modulo = Modulo::create(['codigo' => 'MOD-A', 'uid' => 'ESP-A']);
         $this->actingAs($user)->get(route('panel.modulos.show', $modulo))
-            ->assertOk()->assertSee('Cámara de la jaula')
+            ->assertOk()->assertSee('Cámara del módulo')
             ->assertSee('No hay cámaras habilitadas en este módulo')
-            ->assertSee('Esquema de la jaula');
+            ->assertSee('Esquema');
     }
 
     public function test_camera_selector_only_includes_enabled_cameras_of_the_module(): void

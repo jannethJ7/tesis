@@ -143,14 +143,16 @@
     };
 @endphp
 
-<div class="jaula-page">
+<div class="jaula-page"
+     data-realtime-module="{{ $modulo->id }}"
+     data-realtime-state-url="{{ route('panel.modulos.estado', $modulo) }}">
 
     <div class="jaula-header">
         <div>
             
             <div class="jaula-status-row">
-                <span class="status-dot {{ $estadoClass }}"></span>
-                <span>{{ $estadoTexto }}</span>
+                <span class="status-dot {{ $estadoClass }}" data-module-online-dot></span>
+                <span data-module-online-text>{{ $estadoTexto }}</span>
 
                 <span class="mode-pill">
                     <i class="ph ph-leaf"></i>
@@ -159,7 +161,11 @@
 
                 <span class="contact-pill">
                     <i class="ph ph-wifi-high"></i>
-                    Último dato/contacto: {{ $ultimoContactoTexto }}
+                    Último dato/contacto: <span data-module-last-contact>{{ $ultimoContactoTexto }}</span>
+                </span>
+
+                <span class="contact-pill" data-realtime-connection data-state="connecting" aria-live="polite">
+                    Conectando tiempo real…
                 </span>
 
                 <span class="contact-pill">
@@ -181,39 +187,39 @@
     <div class="jaula-layout module-monitor-layout">
         {{-- Cards de sensores --}}
         <section class="sensor-strip">
-            <div class="sensor-mini-card">
+            <div class="sensor-mini-card" data-sensor-id="{{ $tempSensor?->id }}" data-decimals="1" data-unit="°C">
                 <i class="ph ph-thermometer"></i>
                 <div>
-                    <strong>{{ $formatoValor($temp, 1, '°C') }}</strong>
+                    <strong data-sensor-value>{{ $formatoValor($temp, 1, '°C') }}</strong>
                     <span>Temperatura</span>
-                    <small>{{ $tempSensor ? $momentoSensor($tempSensor) : 'Sensor no registrado' }}</small>
+                    <small data-sensor-measured>{{ $tempSensor ? $momentoSensor($tempSensor) : 'Sensor no registrado' }}</small>
                 </div>
             </div>
 
-            <div class="sensor-mini-card">
+            <div class="sensor-mini-card" data-sensor-id="{{ $humSensor?->id }}" data-decimals="0" data-unit="%">
                 <i class="ph ph-drop"></i>
                 <div>
-                    <strong>{{ $formatoValor($hum, 0, '%') }}</strong>
+                    <strong data-sensor-value>{{ $formatoValor($hum, 0, '%') }}</strong>
                     <span>Humedad</span>
-                    <small>{{ $humSensor ? $momentoSensor($humSensor) : 'Sensor no registrado' }}</small>
+                    <small data-sensor-measured>{{ $humSensor ? $momentoSensor($humSensor) : 'Sensor no registrado' }}</small>
                 </div>
             </div>
 
-            <div class="sensor-mini-card">
+            <div class="sensor-mini-card" data-sensor-id="{{ $nh3Sensor?->id }}" data-decimals="0" data-unit="{{ $nh3Sensor?->unidad ?: 'ppm' }}">
                 <i class="ph ph-cloud"></i>
                 <div>
-                    <strong>{{ $formatoValor($nh3, 0, $nh3Sensor?->unidad ?: 'ppm') }}</strong>
+                    <strong data-sensor-value>{{ $formatoValor($nh3, 0, $nh3Sensor?->unidad ?: 'ppm') }}</strong>
                     <span>Amoniaco / aire</span>
-                    <small>{{ $nh3Sensor ? $momentoSensor($nh3Sensor) : 'Sensor no registrado' }}</small>
+                    <small data-sensor-measured>{{ $nh3Sensor ? $momentoSensor($nh3Sensor) : 'Sensor no registrado' }}</small>
                 </div>
             </div>
 
-            <div class="sensor-mini-card">
+            <div class="sensor-mini-card" data-sensor-id="{{ $aguaSensor?->id }}" data-decimals="0" data-unit="{{ $aguaSensor?->unidad ?: '%' }}">
                 <i class="ph ph-waves"></i>
                 <div>
-                    <strong>{{ $formatoValor($agua, 0, $aguaSensor?->unidad ?: '%') }}</strong>
+                    <strong data-sensor-value>{{ $formatoValor($agua, 0, $aguaSensor?->unidad ?: '%') }}</strong>
                     <span>Nivel de agua</span>
-                    <small>{{ $aguaSensor ? $momentoSensor($aguaSensor) : 'Sensor no registrado' }}</small>
+                    <small data-sensor-measured>{{ $aguaSensor ? $momentoSensor($aguaSensor) : 'Sensor no registrado' }}</small>
                 </div>
             </div>
         </section>
@@ -403,6 +409,7 @@
                             id="toggle-fan-{{ $actFan->id }}"
                             type="checkbox"
                             data-url="{{ route('panel.actuadores.manual', $actFan) }}"
+                            data-actuator-id="{{ $actFan->id }}"
                             {{ $fanOn ? 'checked' : '' }}
                         >
 
@@ -438,6 +445,7 @@
                             id="toggle-calef-{{ $actCalef->id }}"
                             type="checkbox"
                             data-url="{{ route('panel.actuadores.manual', $actCalef) }}"
+                            data-actuator-id="{{ $actCalef->id }}"
                             {{ $calefOn ? 'checked' : '' }}
                         >
 
